@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-size: 14px;
+}
+
+.product {
+    font-size: 16px !important;
+}
+
+select {
+    width: 80px !important;
+    height: 32px;
+    font-size: small;
+    padding: 0.2rem 0.4rem;
+}
+
+input:focus {
+    outline: none;
+}
+
+input {
+    animation: none;
+    transition: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.on {
+    background-color: green;
+    color: white;
+}
+
+.off {
+    background-color: red;
+    color: white;
+}
+
+input .Customcheck {
+    padding: 20px !important;
+    background-color: blue;
+}
+
+.header {
+    width: calc(100%-224px);
+}
