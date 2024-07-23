@@ -16,8 +16,21 @@
             <div class="flex justify-between items-center px-3 py-1 border-b-2">
                 <span class="pr-2 text-[18px] uppercase font-bold">Product</span>
                 <div class="flex justify-center items-center gap-2">
-                    <button id="Searchbutton" class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
-                        <i class="fa-solid fa-gear pr-1"></i>Chart Type
+                    <button class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
+                        <i class="fa-solid fa-filter pr-1"></i>
+                        <div class="px-1">FILTERS</div>
+                    </button>
+                    <div class="flex border-2 rounded-md">
+                        <input class="py-2 w-96 rounded-md" type="text" placeholder="Search">
+                        <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <button class="py-2 px-4 rounded-md border bg-light font-medium">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="py-2 px-4 rounded-md border bg-light font-medium">
+                        <i class="fa-solid fa-trash"></i>
                     </button>
                     <button class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
                         <i class="fa-solid fa-file-export pr-1"></i>Export
@@ -43,46 +56,22 @@
                     </button>
                 </div>
             </div>
-            <div id='toggleSection' style="display: none;">
-                <div class="p-2 flex justify-start items-center gap-2">
-                    <div class="flex">
-                        <button class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
-                            <i class="fa-solid fa-filter pr-1"></i>
-                            <div class="px-1">FILTERS</div>
-                        </button>
-                        <div class="flex border-2 rounded-md">
-                            <input class="py-2 w-96 rounded-md" type="text" placeholder="Search">
-                            <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="py-2 px-4 rounded-md border bg-light font-medium">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                        <button class="py-2 px-4 rounded-md border bg-light font-medium">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="m-1 p-2 bg-right bg-slate-500">
+            <div class="my-1 py-1 bg-right bg-white">
             </div>
             <table class="table-auto w-full">
                 <thead class="py-5 border-b-2">
-                    <tr class="my-5">
+                    <tr class="my-5 bg-black">
                         <th class="text-center">
                             <input class="Customcheck" type="checkbox">
                         </th>
-                        <th class="py-4">Barcode</th>
-                        <th class="pl-2">Product</th>
-                        <th class="text-center">Brand</th>
-                        <th class="text-center">AB</th>
-                        <th class="text-center">Average</th>
-                        <th class="text-center">Option</th>
+                        <th class="text-yellow-500 text-[15px] py-4">Barcode</th>
+                        <th class="text-yellow-500 text-[15px] pl-2">Product</th>
+                        <th class="text-yellow-500 text-[15px] text-center">Brand</th>
+                        <th class="text-yellow-500 text-[15px] text-center">AB</th>
+                        <th class="text-yellow-500 text-[15px] text-center">Average</th>
+                        <th class="text-yellow-500 text-[15px] text-center">Option</th>
 
-                        <th class="text-center">Display</th>
+                        <th class="text-yellow-500 text-[15px] text-center">Display</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,8 +117,12 @@
             </div>
         </td>
 
-        <td class="border-solid h-24 text-center p-4">
-            <button id="active-{{ $row->id }}" class="py-2 px-3 rounded-md off"></button>
+        <td class="border-solid h-24 text-center px-4 flex justify-center items-center">
+            <div id="display">
+                <div class="indicator" id="{{ $row->id }}">
+
+                </div>
+            </div>
         </td>
         </tr>
         @endforeach
@@ -139,6 +132,16 @@
     </div>
 </body>
 <script>
+    const toggleElements = document.querySelectorAll('#display')
+    toggleElements.forEach(element => {
+        element.addEventListener('click', function() {
+            if (!element.classList.contains('active')) {
+                element.classList.add('active');
+            } else {
+                element.classList.remove('active');
+            }
+        });
+    });
     document.getElementById('Searchbutton').addEventListener('click', function() {
         const toggleSection = document.getElementById('toggleSection');
         toggleSection.style.display = toggleSection.style.display === 'none' ? 'block' : 'none';

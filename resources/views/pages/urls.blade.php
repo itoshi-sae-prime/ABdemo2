@@ -15,12 +15,33 @@
             <div class="flex justify-between items-center px-3 py-1 border-b-2">
                 <span class="pr-2 text-[18px] uppercase font-bold">URLS</span>
                 <div class="flex justify-center items-center gap-2">
-                    <button id="Searchbutton" class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
-                        <i class="fa-solid fa-gear pr-1"></i>Chart Type
+                    <button class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
+                        <i class="fa-solid fa-filter pr-1"></i>
+                        <div class="px-1">FILTERS</div>
+                    </button>
+                    <div class="flex border-2 rounded-md">
+                        <input class="py-2 w-96 rounded-md" type="text" placeholder="Search">
+                        <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <button class="py-2 px-4 rounded-md border bg-light font-medium">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="py-2 px-4 rounded-md border bg-light font-medium">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <button class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
+                        <i class="fa-solid fa-file-export pr-1"></i>Export
                     </button>
                     <button class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
                         <i class="fa-solid fa-file-import pr-1"></i>Import
                     </button>
+                    <a href="{{ route('create') }}">
+                        <button class="py-2 px-2 rounded-md border text-xs font-medium bg-blue-500 text-white">
+                            <i class="fa-solid fa-plus pr-1"></i>Create
+                        </button>
+                    </a>
                     <div>
                         <select name="values" class="py-1 px-2 rounded-md border bg-light text-xs font-medium">
                             <option value="50">50</option>
@@ -34,45 +55,21 @@
                     </button>
                 </div>
             </div>
-            <div id='toggleSection' style="display: none;">
-                <div class="p-2 flex justify-start items-center gap-2">
-                    <div class="flex">
-                        <button class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
-                            <i class="fa-solid fa-filter pr-1"></i>
-                            <div class="px-1">FILTERS</div>
-                        </button>
-                        <div class="flex border-2 rounded-md">
-                            <input class="py-2 w-96 rounded-md" type="text" placeholder="Search">
-                            <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="py-2 px-4 rounded-md border bg-light font-medium">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                        <button class="py-2 px-4 rounded-md border bg-light font-medium">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="m-1 p-2 bg-right bg-slate-500">
+            <div class="m-1 p-1 bg-right bg-white">
             </div>
             <table class="table-auto w-full">
-                <thead class="py-5 border-b-2">
+                <thead class="py-5 border-b-2 bg-black">
                     <tr class="my-5">
                         <td class="w-1/12 text-center">
                             <input type="checkbox">
                         </td>
-                        <th class="py-4 pl-2">Product</th>
-                        <th class="text-center">Link</th>
-                        <th class="text-center">Date</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Availability</th>
-                        <th class="text-center">Discount</th>
-                        <th class="text-center">Display</th>
+                        <th class="text-yellow-500 text-[15px]  py-4 pl-2">Product</th>
+                        <th class="text-yellow-500 text-[15px]  text-center">Link</th>
+                        <th class="text-yellow-500 text-[15px]  text-center">Date</th>
+                        <th class="text-yellow-500 text-[15px]  text-center">Price</th>
+                        <th class="text-yellow-500 text-[15px]  text-center">Availability</th>
+                        <th class="text-yellow-500 text-[15px]  text-center">Discount</th>
+                        <th class="text-yellow-500 text-[15px]  text-center">Display</th>
                     </tr>
                 </thead>
                 <!-- <thead class="py-5 border-b-2">
@@ -114,13 +111,18 @@
                             @endif
                         </td>
                         <td class="border-solid h-24">
-                            <div class="text-center text-yellow-500 font-bold">
+                            <div class="text-center text-blue-500 font-bold">
                                 15%
                             </div>
                         </td>
+                        <td class="border-solid h-24 text-center p-4 flex justify-center items-center">
+                            <!-- <button id="active-{{ $row->id }}" class="py-2 px-3 rounded-md off"></button> -->
+                            <!-- <input type="checkbox" class="toggle" id> -->
+                            <div id="display">
+                                <div class="indicator" id="{{ $row->id }}">
 
-                        <td class="border-solid h-24 text-center p-4">
-                            <button id="active-{{ $row->id }}" class="py-2 px-3 rounded-md off"></button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -131,21 +133,18 @@
     </div>
 </body>
 <script>
-    document.getElementById('Searchbutton').addEventListener('click', function() {
-        const toggleSection = document.getElementById('toggleSection');
-        toggleSection.style.display = toggleSection.style.display === 'none' ? 'block' : 'none';
-    });
-
-    document.getElementById('active').addEventListener('click', function() {
-        const button = document.getElementById('active');
-        if (button.classList.contains('off')) {
-            button.classList.remove('off');
-            button.classList.add('on');
-
-        } else {
-            button.classList.remove('on');
-            button.classList.add('off');
-        }
+    // document.getElementById('display').addEventListener('click', function() {
+    //     document.getElementById('display').classList.toggle('active');
+    // });
+    const toggleElements = document.querySelectorAll('#display')
+    toggleElements.forEach(element => {
+        element.addEventListener('click', function() {
+            if (!element.classList.contains('active')) {
+                element.classList.add('active');
+            } else {
+                element.classList.remove('active');
+            }
+        });
     });
 </script>
 @endsection
@@ -160,17 +159,21 @@
             toggleSection.style.display = 'none';
         }
     });
+    // const toggle = document.getElementById('display');
+    // toggle.addEventListener('click', function() {
+    //     toggle.classList.toggle('active');
+    // });
 
-    document.querySelectorAll('[id^="active-"]').forEach(button => {
-        button.addEventListener('click', function() {
-            if (button.classList.contains('off')) {
-                button.classList.remove('off');
-                button.classList.add('on');
-            } else {
-                button.classList.remove('on');
-                button.classList.add('off');
-            }
-        });
-    });
+    // document.querySelectorAll('[id^="active-"]').forEach(button => {
+    //     button.addEventListener('click', function() {
+    //         if (button.classList.contains('off')) {
+    //             button.classList.remove('off');
+    //             button.classList.add('on');
+    //         } else {
+    //             button.classList.remove('on');
+    //             button.classList.add('off');
+    //         }
+    //     });
+    // });
 </script>
 @endsection
