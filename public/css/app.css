@@ -504,6 +504,9 @@ video {
 .fixed {
   position: fixed;
 }
+.sticky {
+  position: sticky;
+}
 .left-0 {
   left: 0px;
 }
@@ -534,6 +537,10 @@ video {
   margin-left: auto;
   margin-right: auto;
 }
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
 .my-5 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
@@ -555,6 +562,9 @@ video {
 .ml-2 {
   margin-left: 0.5rem;
 }
+.ml-3 {
+  margin-left: 0.75rem;
+}
 .ml-\[245px\] {
   margin-left: 245px;
 }
@@ -570,6 +580,9 @@ video {
 .mt-2 {
   margin-top: 0.5rem;
 }
+.mt-3 {
+  margin-top: 0.75rem;
+}
 .block {
   display: block;
 }
@@ -578,6 +591,9 @@ video {
 }
 .table {
   display: table;
+}
+.hidden {
+  display: none;
 }
 .h-12 {
   height: 3rem;
@@ -597,26 +613,35 @@ video {
 .h-full {
   height: 100%;
 }
-.h-screen {
-  height: 100vh;
-}
 .w-1\/12 {
   width: 8.333333%;
 }
 .w-56 {
   width: 14rem;
 }
+.w-72 {
+  width: 18rem;
+}
 .w-96 {
   width: 24rem;
 }
+.w-\[10\%\] {
+  width: 10%;
+}
 .w-\[100\%\] {
   width: 100%;
+}
+.w-\[15\%\] {
+  width: 15%;
 }
 .w-\[20\%\] {
   width: 20%;
 }
 .w-\[25\%\] {
   width: 25%;
+}
+.w-\[278px\] {
+  width: 278px;
 }
 .w-\[40\%\] {
   width: 40%;
@@ -638,6 +663,11 @@ video {
 }
 .table-auto {
   table-layout: auto;
+}
+.select-all {
+  -webkit-user-select: all;
+     -moz-user-select: all;
+          user-select: all;
 }
 .items-center {
   align-items: center;
@@ -725,16 +755,15 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(148 163 184 / var(--tw-bg-opacity));
 }
-.bg-slate-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
-}
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 .bg-right {
   background-position: right;
+}
+.p-1 {
+  padding: 0.25rem;
 }
 .p-2 {
   padding: 0.5rem;
@@ -1003,7 +1032,7 @@ label {
 .circle {
     margin: 0px;
     width: 24px;
-    height: 20px;
+    height: 22px;
     border-radius: 25%;
     background: white;
     position: absolute;
@@ -1017,6 +1046,19 @@ label {
 
 .color {
     position: absolute;
+}
+
+.product-image {
+    width: 3cm;
+    height: 3cm;
+    -o-object-fit: cover;
+       object-fit: cover;
+    /* Đảm bảo hình ảnh không bị méo và vẫn lấp đầy vùng chứa */
+}
+
+td {
+    margin: 0;
+    padding: 0;
 }
 
 #display {
@@ -1036,7 +1078,7 @@ label {
 #display .indicator {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 1;
     width: 20px;
     height: 20px;
     background: red;
@@ -1050,7 +1092,7 @@ label {
 }
 
 #display.active .indicator {
-    left: 23px;
+    left: 22px;
     background: green;
     border: 1px solid black;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5),
@@ -1058,8 +1100,43 @@ label {
         0 -4px 4px rgba(255, 255, 255, 0.2);
 }
 
+.nice {
+    background-color: rgb(250, 174, 174) !important;
+    color: white !important;
+}
+
 #display.active {
-    background: white;
+    background: white !important;
+}
+
+.custom-scrollbar {
+    overflow-y: scroll;
+    /* Hoặc auto nếu bạn muốn thanh cuộn xuất hiện khi cần thiết */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    /* Độ rộng của thanh cuộn dọc */
+    height: 10px;
+    /* Độ cao của thanh cuộn ngang */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Màu nền của rãnh thanh cuộn */
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Màu của thanh cuộn */
+    border-radius: 10px;
+    /* Bo tròn các góc */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* Màu của thanh cuộn khi hover */
 }
 
 .hover\:bg-blue-100:hover {

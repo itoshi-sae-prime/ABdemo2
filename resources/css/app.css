@@ -87,7 +87,7 @@ label {
 .circle {
     margin: 0px;
     width: 24px;
-    height: 20px;
+    height: 22px;
     border-radius: 25%;
     background: white;
     position: absolute;
@@ -101,6 +101,18 @@ label {
 
 .color {
     position: absolute;
+}
+
+.product-image {
+    width: 3cm;
+    height: 3cm;
+    object-fit: cover;
+    /* Đảm bảo hình ảnh không bị méo và vẫn lấp đầy vùng chứa */
+}
+
+td {
+    margin: 0;
+    padding: 0;
 }
 
 #display {
@@ -120,7 +132,7 @@ label {
 #display .indicator {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 1;
     width: 20px;
     height: 20px;
     background: red;
@@ -142,6 +154,41 @@ label {
         0 -4px 4px rgba(255, 255, 255, 0.2);
 }
 
+.nice {
+    background-color: rgb(250, 174, 174) !important;
+    color: white !important;
+}
+
 #display.active {
-    background: #f3f3f3;
+    background: white !important;
+}
+
+.custom-scrollbar {
+    overflow-y: scroll;
+    /* Hoặc auto nếu bạn muốn thanh cuộn xuất hiện khi cần thiết */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    /* Độ rộng của thanh cuộn dọc */
+    height: 10px;
+    /* Độ cao của thanh cuộn ngang */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Màu nền của rãnh thanh cuộn */
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Màu của thanh cuộn */
+    border-radius: 10px;
+    /* Bo tròn các góc */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* Màu của thanh cuộn khi hover */
 }

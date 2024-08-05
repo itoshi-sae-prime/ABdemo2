@@ -6,11 +6,18 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <script src="https://kit.fontawesome.com/6ef99526a1.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<style>
+    .tgdisplaygray {
+        width: 100%;
+        height: auto;
+        background-color: gray !important;
+    }
+</style>
 @endsection
 @section('content')
 
 <body class="bg-slate-300">
-    <div class="m-2 shadow-md">
+    <div class="mr-2 ml-3 mt-3 shadow-md">
         <div class="border-2 bg-white rounded-lg">
             <div class="flex justify-between items-center px-3 py-1 border-b-2">
                 <span class="pr-2 text-[18px] uppercase font-bold">URLS</span>
@@ -19,11 +26,14 @@
                         <i class="fa-solid fa-filter pr-1"></i>
                         <div class="px-1">FILTERS</div>
                     </button>
-                    <div class="flex border-2 rounded-md">
-                        <input class="py-2 w-96 rounded-md" type="text" placeholder="Search">
-                        <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
+                    <!-- Search -->
+                    <div class="border-2 rounded-md">
+                        <form class="flex" action="{{ route('pages.urls') }}" method="GET" id="searchForm">
+                            <input class="p-2 w-72 rounded-md input-search-ajax" id="searchQuery" name="searchurl" placeholder="Search for products...">
+                            <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </form>
                     </div>
                     <button class="py-2 px-4 rounded-md border bg-light font-medium">
                         <i class="fa-solid fa-pen-to-square"></i>
@@ -85,26 +95,20 @@
                 </thead> -->
                 <tbody>
                     @foreach ($arr as $row)
-                    <tr class="font-semibold hover:bg-blue-100 border-b-2 ml-2">
+                    <tr id="toggleDisplay-{{ $row->id }}" class="font-semibold hover:bg-blue-100 border-b-2 ml-2">
                         <td class="w-1/12 text-center">
                             <input type="checkbox">
                         </td>
-                        <td class="p-2 w-[25%]">{{ $row->product }}</td>
-                        <td class="py-2  w-[20%]">
+                        <td class="p-2 w-[25%]">{{ $row->product_name }}</td>
+                        <td class=" py-2 w-[20%]">
                             <a class="text-blue-500" href="https://abbeautyworld.com/">https://abbeautyworld.com/products/lp-tay-trang-micellar-sach-sau-400ml</a>
                         </td>
                         <td class="p-2 text-center">27/10/2001</td>
                         <td class="text-center">
-                            @if($row->AB != "")
-                            {{ $row->AB }}
-                            @else
-                            <div class="flex">
-                                <div class="block h-full w-full text-red-500">0</div>
-                            </div>
-                            @endif
+                            999.000d
                         </td>
                         <td class="border-solid text-center">
-                            @if($row->AB >= 100)
+                            @if(1000 >= 100)
                             <div class="text-green-500 font-semibold"><i class="fa-sharp-duotone fa-solid fa-check"></i></div>
                             @else
                             <div class="text-red-500 font-semibold"><i class="fa-sharp-duotone fa-solid fa-xmark"></i></div>
@@ -118,8 +122,8 @@
                         <td class="border-solid h-24 text-center p-4 flex justify-center items-center">
                             <!-- <button id="active-{{ $row->id }}" class="py-2 px-3 rounded-md off"></button> -->
                             <!-- <input type="checkbox" class="toggle" id> -->
-                            <div id="display">
-                                <div class="indicator" id="{{ $row->id }}">
+                            <div id="display" class="display-toggle">
+                                <div class="indicator" id="indicator-{{ $row->id }}" data-id="{{ $row->id }}">
 
                                 </div>
                             </div>
@@ -128,37 +132,53 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="text-center py-4 font-semibold uppercase">AB-Project</div>
+            <div class=" text-center py-4 font-semibold uppercase">AB-Project</div>
         </div>
     </div>
 </body>
 <script>
-    // document.getElementById('display').addEventListener('click', function() {
-    //     document.getElementById('display').classList.toggle('active');
-    // });
-    const toggleElements = document.querySelectorAll('#display')
-    toggleElements.forEach(element => {
+    document.querySelectorAll('.display-toggle').forEach(element => {
         element.addEventListener('click', function() {
-            if (!element.classList.contains('active')) {
-                element.classList.add('active');
-            } else {
-                element.classList.remove('active');
+            const id = element.querySelector('.indicator').getAttribute('data-id');
+            const targetElement = document.getElementById('toggleDisplay-' + id);
+            console.log(id);
+            element.classList.toggle('active');
+            if (targetElement) {
+                targetElement.classList.toggle('nice');
             }
         });
     });
+    // document.querySelectorAll('.display-toggle').forEach(element => {
+    //     element.addEventListener('click', function() {
+    //         console.log('Clicked:', element);
+    //         const id = element.dataset.id;
+    //         console.log('ID:', id); // Kiểm tra giá trị của id
+
+    //         const targetElement = document.getElementById('toggleDisplay');
+    //         if (targetElement) {
+    //             if (!element.classList.contains('active')) {
+    //                 element.classList.toggle('active');
+    //             } else {
+    //                 element.classList.remove('active');
+    //             }
+    //         } else {
+    //             console.log('No element found with ID:', 'toggleDisplay-' + id);
+    //         }
+    //     });
+    // });
 </script>
 @endsection
 
 @section('scripts')
 <script>
-    document.getElementById('Searchbutton').addEventListener('click', function() {
-        const toggleSection = document.getElementById('toggleSection');
-        if (toggleSection.style.display === 'none') {
-            toggleSection.style.display = 'block';
-        } else {
-            toggleSection.style.display = 'none';
-        }
-    });
+    // document.getElementById('Searchbutton').addEventListener('click', function() {
+    //     const toggleSection = document.getElementById('toggleSection');
+    //     if (toggleSection.style.display === 'none') {
+    //         toggleSection.style.display = 'block';
+    //     } else {
+    //         toggleSection.style.display = 'none';
+    //     }
+    // });
     // const toggle = document.getElementById('display');
     // toggle.addEventListener('click', function() {
     //     toggle.classList.toggle('active');

@@ -11,7 +11,7 @@
 @section('content')
 
 <body class="bg-slate-300">
-    <div class="m-2 shadow-md">
+    <div class="mr-2 ml-3 mt-3 shadow-md">
         <div class="border-2 bg-white rounded-lg">
             <div class="text-[25px] py-2 font-semibold flex justify-center items-center">
                 <div class="pr-1">Dữ liệu và thay đổi tới ngày</div>
@@ -116,47 +116,10 @@
         </div>
     </div>
 </body>
-<script>
-    document.getElementById('Searchbutton').addEventListener('click', function() {
-        const toggleSection = document.getElementById('toggleSection');
-        toggleSection.style.display = toggleSection.style.display === 'none' ? 'block' : 'none';
-    });
-
-    document.getElementById('active').addEventListener('click', function() {
-        const button = document.getElementById('active');
-        if (button.classList.contains('off')) {
-            button.classList.remove('off');
-            button.classList.add('on');
-
-        } else {
-            button.classList.remove('on');
-            button.classList.add('off');
-        }
-    });
-</script>
 @endsection
 
 @section('scripts')
 <script>
-    document.getElementById('Searchbutton').addEventListener('click', function() {
-        const toggleSection = document.getElementById('toggleSection');
-        if (toggleSection.style.display === 'none') {
-            toggleSection.style.display = 'block';
-        } else {
-            toggleSection.style.display = 'none';
-        }
-    });
 
-    document.querySelectorAll('[id^="active-"]').forEach(button => {
-        button.addEventListener('click', function() {
-            if (button.classList.contains('off')) {
-                button.classList.remove('off');
-                button.classList.add('on');
-            } else {
-                button.classList.remove('on');
-                button.classList.add('off');
-            }
-        });
-    });
 </script>
 @endsection
