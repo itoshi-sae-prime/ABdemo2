@@ -114,14 +114,12 @@ class IndexController extends Controller
     {
         $total = 0;
         $count = 0;
-
         foreach ($values as $value) {
             if ($value != 0) {
                 $total += $value;
                 $count++;
             }
         }
-
         if ($count == 0) {
             return 0; // Tránh chia cho 0 nếu không có giá trị nào khác 0
         }
@@ -130,50 +128,109 @@ class IndexController extends Controller
     public function productsRoot(Request $request)
     {
         // $values = array($new_p[$term]->p_ab, $new_p[$term]->p_hsk, $new_p[$term]->p_gu, $new_p[$term]->p_tgs, $new_p[$term]->p_lt);
-        $perPage = $request->input('perPage', 50); // Default to 50 if not specified
-        $arr = Sanpham::paginate($perPage);
-        $detail = DB::table('now_prices')->get();
+        // $perPage = $request->input('perPage', 50);
+        // $arr = Sanpham::paginate($perPage);
+
+        // $detail = DB::table('now_prices')->get();
+        // $query = DB::table('products');
+        // Paginate results
+        // $arr = $query->paginate($perPage);
+        // if ($request->has('search')) {
+        //     $search = $request->input('search');
+        //     $query->where('product_name', 'like', '%' . $search . '%')
+        //         ->orWhere('product_barcode', 'like', '%' . $search . '%');
+        // }
+        // Fetch latest prices
+        //     $p_rows = DB::select("
+        //     SELECT * 
+        //     FROM (
+        //         SELECT 
+        //         @rn:=IF(@prev = p_id, @rn + 1, 1) as rn,
+        //         @prev:=p_id, 
+        //         t.*
+        //         FROM now_prices t, (SELECT @prev:=null, @rn:=0) as vars
+        //         ORDER BY p_id, created_at DESC
+        //     ) as subquery
+        //     WHERE subquery.rn = 1;
+        // ");
+        // $average_values = [];
+        // foreach ($p_rows as $row) {
+        //     $values = [
+        //         $row->p_ab,
+        //         $row->p_hsk,
+        //         $row->p_gu,
+        //         $row->p_tgs,
+        //         $row->p_lt
+        //     ];
+        //     $average_values[$row->p_id] = $this->averageWithoutZero($values);
+        // }
+        // $arr = $query->get();
+        // return view('pages.product', [
+        //     'detail' => $detail,
+        //     'arr' => $arr,
+        //     'query' => $query,
+        //     'new_p' => $p_rows,
+        //     'average_values' => $average_values,
+        //     'c_ab' => $this->configCompare($arr, 'p_ab'),
+        //     'c_hsk' => $this->configCompare($arr, 'p_hsk'),
+        //     'c_gu' => $this->configCompare($arr, 'p_gu'),
+        //     'c_tgk' => $this->configCompare($arr, 'p_tgs'),
+        //     'c_tl' => $this->configCompare($arr, 'p_lt')
+        // ]);
+        $perPage = $request->input('perPage', 200); // Default to 50 if not specified
+
+        // Initial query
         $query = DB::table('products');
+
+        // Apply search filter if provided
         if ($request->has('search')) {
             $search = $request->input('search');
-            $query->where('product_name', 'like', '%' . $search . '%')
-                ->orWhere('product_barcode', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('product_name', 'like', '%' . $search . '%')
+                    ->orWhere('product_barcode', 'like', '%' . $search . '%');
+            });
         }
-        $p_rows = DB::select("
+
+        // Paginate results
+        $products = $query->paginate($perPage);
+
+        // Fetch latest prices
+        $latestPrices = DB::select("
         SELECT * 
         FROM (
             SELECT 
-            @rn:=IF(@prev = p_id, @rn + 1, 1) as rn,
-            @prev:=p_id, 
-            t.*
-            FROM now_prices t, (SELECT @prev:=null, @rn:=0) as vars
+                @rn := IF(@prev = p_id, @rn + 1, 1) AS rn,
+                @prev := p_id, 
+                t.*
+            FROM now_prices t, (SELECT @prev := null, @rn := 0) as vars
             ORDER BY p_id, created_at DESC
-        ) as subquery
+        ) AS subquery
         WHERE subquery.rn = 1;
     ");
-        $average_values = [];
-        foreach ($p_rows as $row) {
+
+        // Calculate average values for each product
+        $averageValues = [];
+        foreach ($latestPrices as $price) {
             $values = [
-                $row->p_ab,
-                $row->p_hsk,
-                $row->p_gu,
-                $row->p_tgs,
-                $row->p_lt
+                $price->p_ab,
+                $price->p_hsk,
+                $price->p_gu,
+                $price->p_tgs,
+                $price->p_lt
             ];
-            $average_values[$row->p_id] = $this->averageWithoutZero($values);
+            $averageValues[$price->p_id] = $this->averageWithoutZero($values);
         }
-        $arr = $query->get();
+
         return view('pages.product', [
-            'detail' => $detail,
-            'arr' => $arr,
-            'query' => $query,
-            'new_p' => $p_rows,
-            'average_values' => $average_values,
-            'c_ab' => $this->configCompare($arr, 'p_ab'),
-            'c_hsk' => $this->configCompare($arr, 'p_hsk'),
-            'c_gu' => $this->configCompare($arr, 'p_gu'),
-            'c_tgk' => $this->configCompare($arr, 'p_tgs'),
-            'c_tl' => $this->configCompare($arr, 'p_lt')
+            'detail' => DB::table('now_prices')->get(),
+            'arr' => $products,
+            'new_p' => $latestPrices,
+            'average_values' => $averageValues,
+            'c_ab' => $this->configCompare($products, 'p_ab'),
+            'c_hsk' => $this->configCompare($products, 'p_hsk'),
+            'c_gu' => $this->configCompare($products, 'p_gu'),
+            'c_tgk' => $this->configCompare($products, 'p_tgs'),
+            'c_tl' => $this->configCompare($products, 'p_lt'),
         ]);
     }
     private function compare($new, $old)
@@ -236,10 +293,6 @@ class IndexController extends Controller
                 'updated_at' => now(),
             ]);
         }
-    }
-    public function thongbao()
-    {
-        echo '2456';
     }
     public function store(Request $request)
     {

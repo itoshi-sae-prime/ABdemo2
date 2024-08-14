@@ -10,48 +10,57 @@
     @yield('style-libraries')
 </head>
 
-<body class="font-inter"><!-- sidebar -->
-    <div id='menu-dashboard' class="fixed left-0 top-0 w-56 h-[100vh] bg-black">
-        <div class="rounded-lg">
-            <div class="px-3">
-                <img class="py-3 mr-2" itemprop="logo" src="//theme.hstatic.net/200000117693/1001219415/14/logo.png?v=1169" alt="AB BEAUTY WORLD" class="img-responsive logoimg ">
-                <ul class="border-2 border-yellow-200 h-[100vh] mb-3 rounded-lg">
-                    <li class="mb-1 mt-2">
-                        <a href="{{ route('pages.home')}}" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-gauge"></i><span class="pl-2">Home</span></a href=" #">
+<body class="font-inter bg-white"><!-- sidebar -->
+    <div id='menu-dashboard' class="fixed left-0 top-0 w-56 h-full bg-black p-2">
+        <div class="flex flex-col rounded-lg h-full">
+            <div class="flex flex-col justify-between px-1 border-2 border-yellow-200 rounded-lg h-full">
+                <ul class="flex flex-col flex-grow" style="justify-content: space-between;">
+                    <li>
+                        <ul>
+                            <li class="border-b-2 pb-3 border-yellow-200">
+                                <img class="pt-3" itemprop="logo" src="//theme.hstatic.net/200000117693/1001219415/14/logo.png?v=1169" alt="AB BEAUTY WORLD" class="img-responsive logoimg ">
+                            </li>
+                            <li class="mb-1 mt-3">
+                                <a href="{{ route('pages.home')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-gauge"></i><span class="pl-2">Home</span></a href=" #">
+                            </li>
+                            <li class="mb-1 ">
+                                <a href="{{ route('pages.dashboard')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class=" fa-solid fa-gauge"></i><span class="pl-2">Dashboard</span></a href=" #">
+                            </li>
+                            <li class="mb-1">
+                                <a href="{{ route('pages.product')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class=" fa-solid fa-bag-shopping"></i><span class="pl-2">Product</span></a href="#">
+                            </li>
+                            <li class="mb-1">
+                                <!-- <a href="{{ route('pages.urls')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class=" fa-solid fa-paperclip"></i><span class="pl-2">URLS</span></a href="#"> -->
+                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">URLS</span></a href="#">
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Categories</span></a href="#">
+                                <!-- <a href="{{ route('pages.categories')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-briefcase "></i><span class="pl-2">Categories</span></a href="#"> -->
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i></i><span class="pl-2">Brands</span></a href="#">
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Price Change</span></a href="#">
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Approval List</span></a href="#">
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Discount List</span></a href="#">
+                            </li>
+                            <li class="mb-1">
+                                <a href="{{ route('pages.setting')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Setting</span></a href="#">
+                            </li>
+                        </ul>
                     </li>
-                    <li class="mb-1 mt-2">
-                        <a href="{{ route('pages.dashboard')}}" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class=" fa-solid fa-gauge"></i><span class="pl-2">Dashboard</span></a href=" #">
-                    </li>
-                    <li class="mb-1">
-                        <a href="{{ route('pages.product')}}" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class=" fa-solid fa-bag-shopping"></i><span class="pl-2">Product</span></a href="#">
-                    </li>
-                    <li class="mb-1">
-                        <!-- <a href="{{ route('pages.urls')}}" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class=" fa-solid fa-paperclip"></i><span class="pl-2">URLS</span></a href="#"> -->
-                        <a href="#" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">URLS</span></a href="#">
-                    </li>
-                    <li class="mb-1">
-                        <a href="#" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Categories</span></a href="#">
-                        <!-- <a href="{{ route('pages.categories')}}" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-briefcase "></i><span class="pl-2">Categories</span></a href="#"> -->
-                    </li>
-                    <li class="mb-1">
-                        <a href="#" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i></i><span class="pl-2">Brands</span></a href="#">
-                    </li>
-                    <li class="mb-1">
-                        <a href="#" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Price Change</span></a href="#">
-                    </li>
-                    <li class="mb-1">
-                        <a href="#" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Approval List</span></a href="#">
-                    </li>
-                    <li class="mb-1">
-                        <a href="#" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Discount List</span></a href="#">
-                    </li>
-
-                    <li class="mb-1">
-                        <a href="{{ route('pages.setting')}}" class="text-slate-500 block px-4 py-2 font-semibold rounded-lg mr-1 hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Setting</span></a href="#">
+                </ul>
+                <ul>
+                    <li class="mb-1 border-t-2 border-yellow-200">
+                        <a href="{{ route('pages.setting')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800 my-2"><i class="fa-solid fa-lock"></i><span class="pl-2">Log out</span></a href="#">
                     </li>
                 </ul>
             </div>
-
         </div>
     </div>
     <!-- <div id='header' class="top-0 w-[calc(100%-224px)] ml-[252px] h-12 bg-black p-2 " style="position: fixed;">
@@ -73,20 +82,20 @@
             </div>
         </div>
     </div> -->
-    <div class="w-[calc(100%-246px)] h-[calc(100%-50px)] ml-[245px]" style="padding: 0px 0px 0px 0px">
+    <div class="w-[calc(100%-225px)] h-[calc(100%-50px)]" style="margin-left: 224px !important;">
         @yield('content')
     </div>
 </body>
 @yield('scripts')
 <script>
-    document.getElementById('Searchbutton').addEventListener('click', function() {
-        const toggleSection = document.getElementById('toggleSection');
-        if (toggleSection.style.display === 'none') {
-            toggleSection.style.display = 'block';
-        } else {
-            toggleSection.style.display = 'none';
-        }
-    });
+    // document.getElementById('Searchbutton').addEventListener('click', function() {
+    //     const toggleSection = document.getElementById('toggleSection');
+    //     if (toggleSection.style.display === 'none') {
+    //         toggleSection.style.display = 'block';
+    //     } else {
+    //         toggleSection.style.display = 'none';
+    //     }
+    // });
     document.getElementById('active').addEventListener('click', function() {
         const button = document.getElementById('active');
         if (button.classList.contains('off')) {

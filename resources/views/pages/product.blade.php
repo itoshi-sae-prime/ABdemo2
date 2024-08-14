@@ -12,7 +12,7 @@
 
 
 <body class="bg-slate-300">
-    <div class="mr-2 ml-3 mt-3 shadow-md">
+    <div class="mx-2 mt-3 shadow-md">
         <div class="border-2 bg-white rounded-lg">
             <div class="flex justify-between items-center px-3 py-1 border-b-2 bg-white shadow-lg" style="position: sticky; top: 0; z-index:1">
                 <span class="pr-2 text-[18px] uppercase font-bold">Product</span>
@@ -31,17 +31,21 @@
                         </form>
                     </div>
                     <!-- fix -->
-                    <button class="py-2 px-4 rounded-md border bg-light font-medium">
+                    <!-- <button class="py-2 px-4 rounded-md border bg-light font-medium">
                         <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
+                    </button> -->
                     <!-- delete -->
                     <button id="delete-selected" class="py-2 px-4 rounded-md border bg-light font-medium">
                         <i class="fa-solid fa-trash"></i>
                     </button>
+                    <!-- export -->
                     <button class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
-                        <i class="fa-solid fa-file-export pr-1"></i>Export
+                        <a href="{{ route('export') }}">
+                            <i class="fa-solid fa-file-export pr-1"></i>Export
+                        </a>
                     </button>
-                    <button class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
+                    <!-- import -->
+                    <button id="openModalBtn" class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
                         <i class="fa-solid fa-file-import pr-1"></i>Import
                     </button>
                     <a href="{{ route('create') }}">
@@ -50,23 +54,44 @@
                         </button>
                     </a>
                     <div>
-                        <select name="values" class="py-1 px-2 rounded-md border bg-light text-xs font-medium">
+                        <select name="values" class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
                             <option value="50">50</option>
                             <option value="100">100</option>
                             <option value="150">150</option>
                             <option value="200">200</option>
                         </select>
                     </div>
-                    <button class="py-1 px-2 rounded-md border bg-light text-xs font-medium">
-                        <i class="fa-solid fa-arrows-rotate pr-1"></i>
+                    <button id="refresh" class="py-2 px-3 rounded-md border bg-light text-xs font-medium">
+                        <i class="fa-solid fa-arrows-rotate"></i>
                     </button>
                 </div>
             </div>
-            <div class="my-1 py-1 bg-right bg-white">
+            <div id="ImportToggle" class="p-4 bg-slate-200" style="display:none">
+                <div class="flex justify-center items-center">
+                    <form id="import_excel_form" method="post" action="{{ route('import') }}" enctype="multipart/form-data" class="p-3 flex justify-center items-center bg-gray-100 rounded-lg shadow-lg" style="width:100%">
+                        @csrf
+                        <div class="flex items-center space-x-4">
+                            <button type="button" class="btn-import px-3 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                onclick="document.getElementById('fileInput').click();">
+                                UploadFile
+                            </button>
+                            <input type="file" id="fileInput" name="import_excel" style="display: none;" onchange="displayFileName()">
+                            <span id="fileName" class="text-gray-700 font-semibold" style="max-width: 1000px; width:350px;">No file chosen</span>
+                        </div>
+                        <button type="submit" name="save_excel_data" class="px-3 py-2 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" style="background-color:green">
+                            Import
+                        </button>
+                    </form>
+                </div>
             </div>
+            @if (session('message'))
+            <div class="alert alert-info text-center font-extrabold">
+                {{ session('message') }}
+            </div>
+            @endif
             <table class="table-auto w-full">
                 <thead class="py-5 border-b-2 w-100">
-                    <tr class="my-5 bg-black">
+                    <tr class="my-5 bg-slate-300">
                         <th class="w-1/12 text-center">
                             <input class="Customcheck" type="checkbox" id="select-all">
                         </th>
@@ -82,55 +107,9 @@
                 <tbody class="">
                     <?php
                     $term = 0;
-                    $ab_icons = $c_ab;
-                    $hsk_icons = $c_hsk;
-                    $gu_icons = $c_gu;
-                    $tgk_icons = $c_tgk;
-                    $tl_icons = $c_tl;
-                    $last_up_date = ''; ?>
-                    @foreach ($arr as $row)
-                    <?php
-                    $ab_icon = $ab_icons[$term];
-                    $ab_color = '';
-                    if ($ab_icon == 'fa fa-chevron-up') {
-                        $ab_color = '#63E6BE';
-                    }
-                    if ($ab_icon == 'fa fa-chevron-down') {
-                        $ab_color = 'red';
-                    }
-                    $hsk_icon = $hsk_icons[$term];
-                    $hsk_color = '';
-                    if ($hsk_icon == 'fa fa-chevron-up') {
-                        $hsk_color = '#63E6BE';
-                    }
-                    if ($hsk_icon == 'fa fa-chevron-down') {
-                        $hsk_color = 'red';
-                    }
-                    $gu_icon = $gu_icons[$term];
-                    $gu_color = '';
-                    if ($gu_icon == 'fa fa-chevron-up') {
-                        $gu_color = '#63E6BE';
-                    }
-                    if ($gu_icon == 'fa fa-chevron-down') {
-                        $gu_color = 'red';
-                    }
-                    $tgk_icon = $tgk_icons[$term];
-                    $tgk_color = '';
-                    if ($tgk_icon == 'fa fa-chevron-up') {
-                        $tgk_color = '#63E6BE';
-                    }
-                    if ($tgk_icon == 'fa fa-chevron-down') {
-                        $tgk_color = 'red';
-                    }
-                    $tl_icon = $tl_icons[$term];
-                    $tl_color = '';
-                    if ($tl_icon == 'fa fa-chevron-up') {
-                        $tl_color = '#63E6BE';
-                    }
-                    if ($tl_icon == 'fa fa-chevron-down') {
-                        $tl_color = 'red';
-                    }
+                    $last_up_date = '';
                     ?>
+                    @foreach ($arr as $row)
                     <form action="{{ route('product.selected') }}" method="POST">
                         <tr id="toggleDisplay-{{ $row->id }}" class="font-semibold hover:bg-blue-100 border-b-2 m-1">
                             <td class="w-1/12 text-center">
@@ -139,7 +118,8 @@
                             <td class="mx-1">{{ $row->product_barcode }}</td>
                             <td class="p-2 w-[40%]">{{ $row->product_name }}</td>
                             <td class="p-2 text-center">{{ $row->brand }}</td>
-                            <td data-value="{{$new_p[$term]->p_ab}}" alt="" class="text-center bg-slate-200 border-y-2">
+                            @if(isset($new_p[$term]))
+                            <td data-value="{{$new_p[$term]->p_ab}}" alt="" class="text-center bg-slate-300 border-y-2 font-bold">
                                 <a class="link-price" href="{{$row->ab_beautyworld}}">
                                     @if(is_numeric($new_p[$term]->p_ab ))
                                     @if($new_p[$term]->p_ab > $new_p[$term]->p_hsk)
@@ -150,9 +130,12 @@
                                     @endif
                                 </a>
                             </td>
+                            @endif
+                            @if(isset($average_values[$row->id]))
                             <td alt="" class="text-center">
                                 {{ number_format($average_values[$row->id], 0, ',', '.') }}
                             </td>
+                            @endif
                             <td class="border-solid h-24">
                                 <div class="flex justify-center">
                                     <button>
@@ -162,9 +145,7 @@
                             </td>
                             <td class="border-solid h-24 text-center px-4 flex justify-center items-center">
                                 <div id="display" class="display-toggle">
-                                    <div class="indicator" id="indicator-{{ $row->id }}" data-id="{{ $row->id }}">
-
-                                    </div>
+                                    <div class="indicator" id="indicator-{{ $row->id }}" data-id="{{ $row->id }}"></div>
                                 </div>
                             </td>
                         </tr>
@@ -191,11 +172,29 @@
             }
         });
     });
+
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        var importToggle = document.getElementById('ImportToggle');
+        if (importToggle.style.display === "none" || importToggle.style.display === "") {
+            importToggle.style.display = "block";
+        } else {
+            importToggle.style.display = "none";
+        }
+    });
+
+    function displayFileName() {
+        var input = document.getElementById('fileInput');
+        var fileName = document.getElementById('fileName');
+        fileName.textContent = input.files[0] ? input.files[0].name : "No file chosen";
+    }
 </script>
 @endsection
 
 @section('scripts')
 <script>
+    document.getElementById('refresh').addEventListener('click', function() {
+        window.location.reload();
+    })
     document.getElementById('select-all').addEventListener('click', function() {
         const checkboxes = document.querySelectorAll('input[name="items"]');
         checkboxes.forEach(checkbox => checkbox.checked = this.checked);

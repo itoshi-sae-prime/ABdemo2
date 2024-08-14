@@ -163,32 +163,19 @@ td {
     background: white !important;
 }
 
-.custom-scrollbar {
-    overflow-y: scroll;
-    /* Hoặc auto nếu bạn muốn thanh cuộn xuất hiện khi cần thiết */
+.btn-import {
+    display: flex;
+    position: relative;
+    font-size: 15px;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-    width: 10px;
-    /* Độ rộng của thanh cuộn dọc */
-    height: 10px;
-    /* Độ cao của thanh cuộn ngang */
+.btn-import input[type="file"] {
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    /* Màu nền của rãnh thanh cuộn */
-    border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #888;
-    /* Màu của thanh cuộn */
-    border-radius: 10px;
-    /* Bo tròn các góc */
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #555;
-    /* Màu của thanh cuộn khi hover */
+input[type="file"] #file-upload-button {
+    display: none !important;
 }
