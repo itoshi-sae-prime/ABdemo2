@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('admin.layouts.dashboard')
 
 @section('title', 'Product History')
 
@@ -23,7 +23,7 @@
                     </button>
                     <!-- Search -->
                     <div class="border-2 rounded-md">
-                        <form class="flex" action="{{ route('pages.product') }}" method="GET" id="searchForm">
+                        <form class="flex" action="{{ route('admin.pages.product') }}" method="GET" id="searchForm">
                             <input class="p-2 w-72 rounded-md input-search-ajax" id="searchQuery" name="search" placeholder="Search for products...">
                             <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none" type="submit">
                                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -48,7 +48,7 @@
                     <button id="openModalBtn" class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
                         <i class="fa-solid fa-file-import pr-1"></i>Import
                     </button>
-                    <a href="{{ route('create') }}">
+                    <a href="{{ route('product.create') }}">
                         <button class="py-2 px-2 rounded-md border text-xs font-medium bg-blue-500 text-white">
                             <i class="fa-solid fa-plus pr-1"></i>Create
                         </button>
@@ -110,7 +110,7 @@
                     $last_up_date = '';
                     ?>
                     @foreach ($arr as $row)
-                    <form action="{{ route('product.selected') }}" method="POST">
+                    <form action="{{ route('product.delete.selected') }}" method="POST">
                         <tr id="toggleDisplay-{{ $row->id }}" class="font-semibold hover:bg-blue-100 border-b-2 m-1">
                             <td class="w-1/12 text-center">
                                 <input type="checkbox" name="items" value="{{ $row->id }}">
@@ -139,7 +139,7 @@
                             <td class="border-solid h-24">
                                 <div class="flex justify-center">
                                     <button>
-                                        <a href="{{ route('pages.history', ['id' => $row->id]) }}" class="bg-blue-500 text-white font-medium py-2 px-4 text-center rounded-lg">Detail</a>
+                                        <a href="{{ route('history', ['id' => $row->id]) }}" class="bg-blue-500 text-white font-medium py-2 px-4 text-center rounded-lg">Detail</a>
                                     </button>
                                 </div>
                             </td>
@@ -214,7 +214,7 @@
             // Tạo form để gửi yêu cầu xóa
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = "{{ route('product.selected') }}"
+            form.action = "{{ route('product.delete.selected') }}"
             // Thêm CSRF token
             const csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';

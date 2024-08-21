@@ -66,7 +66,7 @@ class ImportController extends Controller
                 if (count($filteredValues) > 0) {
                     try {
                         DB::table('products')->insert($values);
-                        session()->flash('message', 'Data imported successfully');
+                        session()->flash('message', 'Data Imported Successfully');
                     } catch (\Exception $e) {
                         // Handle any exceptions that occur
                         session()->flash('message', 'Failed to import data: ' . $e->getMessage());

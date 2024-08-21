@@ -2,34 +2,58 @@
 
 namespace App\Http\Controllers;
 
+session_start();
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Sanpham;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
-    public function home()
-    {
-        return view('pages.home');
-    }
+    // public function home()
+    // {
+    //     return view('pages.home');
+    // }
     public function createpage()
     {
         return view('create');
     }
     public function urlpage()
     {
-        $q = DB::table('products')->select('id', 'product_barcode', 'product_name', 'brand', 'ab_beautyworld', 'hasaki', 'guardian', 'thegioiskinfood', 'lamthao');
-        $arr = $q->get();
-        return view('pages.urls', compact('arr'));
+        $products = DB::table('products')
+            ->leftJoin('now_prices', function ($join) {
+                $join->on('products.id', '=', 'now_prices.p_id')
+                    ->whereRaw('now_prices.created_at = (SELECT MAX(np2.created_at) FROM now_prices np2 WHERE np2.p_id = products.id)');
+            })
+            ->select('products.id', 'products.product_barcode', 'products.brand', 'products.product_name', 'products.ab_beautyworld', 'now_prices.p_ab')
+            ->get();
+
+        return view('admin.pages.urls', [
+            'products' => $products,
+        ]);
     }
     public function historypage($id)
     {
         $product = Sanpham::findOrFail($id);
         $detail =   DB::table('now_prices')->where('p_id', $id)->orderBy('created_at', 'desc')->take(5)->get();
         // $details = $detail->first();
-        return view('pages.history', [
+        $latestPrices = DB::select("
+        SELECT * 
+        FROM (
+            SELECT 
+                @rn := IF(@prev = p_id, @rn + 1, 1) AS rn,
+                @prev := p_id, 
+                t.*
+            FROM now_prices t, (SELECT @prev := null, @rn := 0) as vars
+            ORDER BY p_id, created_at DESC
+        ) AS subquery
+        WHERE subquery.rn = 1;
+    ");
+        return view('history', [
             'product' => $product,
             'detail' => $detail,
+            'new_p' => $latestPrices,
         ]);
     }
     public function search(Request $request)
@@ -65,6 +89,21 @@ class IndexController extends Controller
     public function dashboardpage()
     {
         return view('pages.dashboard');
+        // $user = Auth::user();
+
+        // $userRole = DB::table('user_new')->where('role', $user->Role)->value('Role');
+        // dd($user->Role);
+        // die();
+        // if ($user->role === 'admin') {
+        //     echo '1';
+        //     return view('admin.pages.dashboard');
+        // } else if ($user->role  ===  'manager') {
+        //     echo '2';
+        //     return view('manager.pages.dashboard');
+        // } else {
+        //     echo '3';
+        //     return view('user.pages.dashboard');
+        // }
     }
     public function categoriespage()
     {
@@ -127,56 +166,6 @@ class IndexController extends Controller
     }
     public function productsRoot(Request $request)
     {
-        // $values = array($new_p[$term]->p_ab, $new_p[$term]->p_hsk, $new_p[$term]->p_gu, $new_p[$term]->p_tgs, $new_p[$term]->p_lt);
-        // $perPage = $request->input('perPage', 50);
-        // $arr = Sanpham::paginate($perPage);
-
-        // $detail = DB::table('now_prices')->get();
-        // $query = DB::table('products');
-        // Paginate results
-        // $arr = $query->paginate($perPage);
-        // if ($request->has('search')) {
-        //     $search = $request->input('search');
-        //     $query->where('product_name', 'like', '%' . $search . '%')
-        //         ->orWhere('product_barcode', 'like', '%' . $search . '%');
-        // }
-        // Fetch latest prices
-        //     $p_rows = DB::select("
-        //     SELECT * 
-        //     FROM (
-        //         SELECT 
-        //         @rn:=IF(@prev = p_id, @rn + 1, 1) as rn,
-        //         @prev:=p_id, 
-        //         t.*
-        //         FROM now_prices t, (SELECT @prev:=null, @rn:=0) as vars
-        //         ORDER BY p_id, created_at DESC
-        //     ) as subquery
-        //     WHERE subquery.rn = 1;
-        // ");
-        // $average_values = [];
-        // foreach ($p_rows as $row) {
-        //     $values = [
-        //         $row->p_ab,
-        //         $row->p_hsk,
-        //         $row->p_gu,
-        //         $row->p_tgs,
-        //         $row->p_lt
-        //     ];
-        //     $average_values[$row->p_id] = $this->averageWithoutZero($values);
-        // }
-        // $arr = $query->get();
-        // return view('pages.product', [
-        //     'detail' => $detail,
-        //     'arr' => $arr,
-        //     'query' => $query,
-        //     'new_p' => $p_rows,
-        //     'average_values' => $average_values,
-        //     'c_ab' => $this->configCompare($arr, 'p_ab'),
-        //     'c_hsk' => $this->configCompare($arr, 'p_hsk'),
-        //     'c_gu' => $this->configCompare($arr, 'p_gu'),
-        //     'c_tgk' => $this->configCompare($arr, 'p_tgs'),
-        //     'c_tl' => $this->configCompare($arr, 'p_lt')
-        // ]);
         $perPage = $request->input('perPage', 200); // Default to 50 if not specified
 
         // Initial query
@@ -220,18 +209,42 @@ class IndexController extends Controller
             ];
             $averageValues[$price->p_id] = $this->averageWithoutZero($values);
         }
+        $userId = session('user');
+        if ($userId) {
+            // Fetch the user's role from the database using the user ID
+            $user = DB::table('user_new')->where('id', $userId->Id)->first();
 
-        return view('pages.product', [
-            'detail' => DB::table('now_prices')->get(),
-            'arr' => $products,
-            'new_p' => $latestPrices,
-            'average_values' => $averageValues,
-            'c_ab' => $this->configCompare($products, 'p_ab'),
-            'c_hsk' => $this->configCompare($products, 'p_hsk'),
-            'c_gu' => $this->configCompare($products, 'p_gu'),
-            'c_tgk' => $this->configCompare($products, 'p_tgs'),
-            'c_tl' => $this->configCompare($products, 'p_lt'),
-        ]);
+            $role = $user ? $user->Role : null;
+
+            if ($user && isset($role)) {
+                switch ($role) {
+                    case 'admin':
+                        $view = 'admin.pages.product';
+                        break;
+                    case 'manager':
+                        $view = 'manager.pages.product';
+                        break;
+                    default:
+                        $view = 'user.pages.product';
+                        break;
+                }
+                return view($view, [
+                    'detail' => DB::table('now_prices')->get(),
+                    'arr' => $products,
+                    'new_p' => $latestPrices,
+                    'average_values' => $averageValues,
+                    'c_ab' => $this->configCompare($products, 'p_ab'),
+                    'c_hsk' => $this->configCompare($products, 'p_hsk'),
+                    'c_gu' => $this->configCompare($products, 'p_gu'),
+                    'c_tgk' => $this->configCompare($products, 'p_tgs'),
+                    'c_tl' => $this->configCompare($products, 'p_lt'),
+                ]);
+            } else {
+                return redirect()->route('login');
+            }
+        } else {
+            return redirect()->route('login');
+        }
     }
     private function compare($new, $old)
     {
@@ -245,7 +258,6 @@ class IndexController extends Controller
     }
     private function checkPrice($products)
     {
-
         foreach ($products as $product) {
             $product->ab_beautyworld = $this->abScanner($product->ab_beautyworld);
             $product->hasaki = $this->hasakiScanner($product->hasaki);
@@ -294,6 +306,31 @@ class IndexController extends Controller
             ]);
         }
     }
+    public function reset()
+    {
+        $this->addProductToPNow();
+        return redirect()->route('pages.products');
+    }
+    private function selectScanner($value, $method, $selector, $attribute = null, $multiplier = 1)
+    {
+
+        $crawler = new CrawlerController();
+        $gtagVa =  $crawler->getPrice($value);
+
+
+
+        if ($gtagVa) {
+            return $gtagVa;
+        } else {
+            $var_client = $this->generalScanner($value, $method, $selector, $attribute, $multiplier);
+            if ($var_client) {
+
+                return $var_client;
+            } else {
+                return $this->domScanner($value, $method, $selector, $attribute, $multiplier);
+            }
+        }
+    }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -318,8 +355,8 @@ class IndexController extends Controller
         if (count($ids) > 0) {
             Sanpham::whereIn('id', $ids)->delete();
             DB::table('now_prices')->where('p_id', $ids)->delete();
-            return redirect()->route('pages.product')->with('success', 'Các mục đã được xóa thành công.');
+            return redirect()->route('admin.pages.product')->with('success', 'Các mục đã được xóa thành công.');
         }
-        return redirect()->route('pages.product')->with('error', 'Không có mục nào được chọn để xóa.');
+        return redirect()->route('admin.pages.product')->with('error', 'Không có mục nào được chọn để xóa.');
     }
 }

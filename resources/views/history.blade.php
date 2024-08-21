@@ -1,21 +1,32 @@
-@extends('layouts.dashboard')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'Product History')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/6ef99526a1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
 
-@section('style-libraries')
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script src="https://kit.fontawesome.com/6ef99526a1.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
-@endsection
-
-@section('content')
-
-<body class="bg-slate-300">
-    <div class="w-[100%] mx-auto ">
-        <div class="product m-3 border-2 border-solid rounded-lg bg-black">
+<body class="px-5 py-3">
+    <?php
+    $term = 0;
+    ?>
+    <div class="w-[100%] mx-auto border-2">
+        <div class="product m-3 border-4 border-solid rounded-lg ">
             <div class="m-[18px]">
-                <div class="flex justify-center">
-                    <div class="font-semibold  tracking-wide m-2 uppercase pb-2 text-white" style="font-size: 30px;">Details Of Product Price Changes</div>
+                <div class="flex justify-between items-center">
+                    <div class="font-semibold  tracking-wide m-2 uppercase pb-2 text-black" style="font-size: 30px;">Details Of Product Price Changes</div>
+                    <div class="gap gap-x-4">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <a href="{{ route('changesform',[$product->product_barcode,$new_p[$term]->p_ab]) }}">Fix</a>
+                        </button>
+                        <button onclick="window.history.back();" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Back
+                        </button>
+                    </div>
                 </div>
                 <div class="my-2">
                     <div class="my-auto">
@@ -28,8 +39,8 @@
                             </thead>
                             <tbody>
                                 <tr class="font-semibold">
-                                    <td class="border-2 border-solid border-black text-center p-2 text-[18px] text-white">{{$product -> product_name}}</td>
-                                    <td class="border-2 border-solid border-black text-center p-2 text-[20px] text-white">{{$product -> product_barcode}}</td>
+                                    <td class="border-2 border-solid border-black text-center p-2 text-[18px] text-black">{{$product -> product_name}}</td>
+                                    <td class="border-2 border-solid border-black text-center p-2 text-[20px] text-black">{{$product -> product_barcode}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -102,10 +113,10 @@
                                 $term = 1
                                 ?>
                                 @foreach($detail as $detail)
-                                <tr class="font-semibold hover:bg-slate-400 hover:text-white" onclick="updatePrice({{ $detail->p_ab }}, {{ $detail->p_hsk }}, {{ $detail->p_gu }}, {{ $detail->p_tgs }}, {{ $detail->p_lt }})" style="cursor: pointer">
-                                    <td class="border-2 border-solid border-black text-center font-bold text-white">{{$term++}}</td>
-                                    <td class="border-2 border-solid border-black text-center text-[16px] p-3 text-white">{{$detail->created_at}}</td>
-                                    <td class="border-2 border-solid border-black text-center text-[16px] p-3 text-white">{{$detail->updated_at}}</td>
+                                <tr class="font-semibold hover:bg-slate-400 hover:text-black" onclick="updatePrice({{ $detail->p_ab }}, {{ $detail->p_hsk }}, {{ $detail->p_gu }}, {{ $detail->p_tgs }}, {{ $detail->p_lt }})" style="cursor: pointer">
+                                    <td class="border-2 border-solid border-black text-center font-bold text-black">{{$term++}}</td>
+                                    <td class="border-2 border-solid border-black text-center text-[16px] p-3 text-black">{{$detail->created_at}}</td>
+                                    <td class="border-2 border-solid border-black text-center text-[16px] p-3 text-black">{{$detail->updated_at}}</td>
                                 </tr>
                                 @endforeach
                         </table>
@@ -113,11 +124,12 @@
                 </div>
             </div>
         </div>
+        <div class="text-center py-4 font-semibold uppercase bottom-0 bg-slate-400">AB-Project</div>
     </div>
+    <?php
+    $term++;
+    ?>
 </body>
-@endsection
-
-@section('scripts')
 <script>
     function updatePrice(p_ab, p_hsk, p_gu, p_tgs, p_lt) {
         document.getElementById('p_ab').innerText = new Intl.NumberFormat().format(p_ab);
@@ -127,4 +139,5 @@
         document.getElementById('p_lt').innerText = new Intl.NumberFormat().format(p_lt);
     }
 </script>
-@endsection
+
+</html>

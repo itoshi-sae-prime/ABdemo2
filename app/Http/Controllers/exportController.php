@@ -15,10 +15,15 @@ class ExportController extends Controller
 {
     public function export()
     {
-        $servername = "103.221.221.22";
-        $username = "yehasfty_check_p";
-        $password = "minhquoc7a3a@gmail.com";
-        $dbname = "yehasfty_check_price";
+        $servername = "127.0.0.1";
+        $username = "root";
+        $password = "";
+        $dbname = "ab_check_online";
+
+        // $servername = "103.221.221.22";
+        // $username = "yehasfty_check_p";
+        // $password = "minhquoc7a3a@gmail.com";
+        // $dbname = "yehasfty_check_price";
 
         $conn = mysqli_connect($servername, $username, $password, $dbname);
 

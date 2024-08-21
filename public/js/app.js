@@ -2071,6 +2071,9 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+try {
+  __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'bootstrap'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+} catch (e) {}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

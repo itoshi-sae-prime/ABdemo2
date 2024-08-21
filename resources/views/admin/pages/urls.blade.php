@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('admin.layouts.dashboard')
 
 @section('title', 'Product History')
 
@@ -28,7 +28,7 @@
                     </button>
                     <!-- Search -->
                     <div class="border-2 rounded-md">
-                        <form class="flex" action="{{ route('pages.urls') }}" method="GET" id="searchForm">
+                        <form class="flex" action="" method="" id="searchForm">
                             <input class="p-2 w-72 rounded-md input-search-ajax" id="searchQuery" name="searchurl" placeholder="Search for products...">
                             <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none" type="submit">
                                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -41,17 +41,6 @@
                     <button class="py-2 px-4 rounded-md border bg-light font-medium">
                         <i class="fa-solid fa-trash"></i>
                     </button>
-                    <button class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
-                        <i class="fa-solid fa-file-export pr-1"></i>Export
-                    </button>
-                    <button class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
-                        <i class="fa-solid fa-file-import pr-1"></i>Import
-                    </button>
-                    <a href="{{ route('create') }}">
-                        <button class="py-2 px-2 rounded-md border text-xs font-medium bg-blue-500 text-white">
-                            <i class="fa-solid fa-plus pr-1"></i>Create
-                        </button>
-                    </a>
                     <div>
                         <select name="values" class="py-1 px-2 rounded-md border bg-light text-xs font-medium">
                             <option value="50">50</option>
@@ -77,7 +66,7 @@
                         <th class="text-yellow-500 text-[15px]  text-center">Link</th>
                         <th class="text-yellow-500 text-[15px]  text-center">Date</th>
                         <th class="text-yellow-500 text-[15px]  text-center">Price</th>
-                        <th class="text-yellow-500 text-[15px]  text-center">Availability</th>
+                        <!-- <th class="text-yellow-500 text-[15px]  text-center">Availability</th> -->
                         <th class="text-yellow-500 text-[15px]  text-center">Discount</th>
                         <th class="text-yellow-500 text-[15px]  text-center">Display</th>
                     </tr>
@@ -94,42 +83,48 @@
                     </tr>
                 </thead> -->
                 <tbody>
-                    @foreach ($arr as $row)
-                    <tr id="toggleDisplay-{{ $row->id }}" class="font-semibold hover:bg-blue-100 border-b-2 ml-2">
+                    <?php
+                    $term = 0;
+                    $last_up_date = '';
+                    ?>
+                    @foreach($products as $product)
+                    <tr id="toggleDisplay-{{ $product->id }}" class="font-semibold hover:bg-blue-100 border-b-2 ml-2">
                         <td class="w-1/12 text-center">
                             <input type="checkbox">
                         </td>
-                        <td class="p-2 w-[25%]">{{ $row->product_name }}</td>
-                        <td class=" py-2 w-[20%]">
-                            <a class="text-blue-500" href="https://abbeautyworld.com/">https://abbeautyworld.com/products/lp-tay-trang-micellar-sach-sau-400ml</a>
+                        <td class="p-2 w-[25%]">{{ $product->product_name }}</td>
+                        <td class=" py-2 w-[15%]">
+                            <a class="text-blue-500" href="{{$product->ab_beautyworld}}">
+                                {{ \Illuminate\Support\Str::limit($product->ab_beautyworld, 50) }}
+                            </a>
                         </td>
-                        <td class="p-2 text-center">27/10/2001</td>
-                        <td class="text-center">
-                            999.000d
+                        <td class="p-2 text-center">dd/mm/yyyy</td>
+                        <td class="p-2 text-center border-y-2 font-bold text-red-500">
+                            <a class="link-price ">
+                                {{number_format($product->p_ab, 0, ',', '.') }}
+                            </a>
                         </td>
-                        <td class="border-solid text-center">
-                            @if(1000 >= 100)
-                            <div class="text-green-500 font-semibold"><i class="fa-sharp-duotone fa-solid fa-check"></i></div>
-                            @else
-                            <div class="text-red-500 font-semibold"><i class="fa-sharp-duotone fa-solid fa-xmark"></i></div>
-                            @endif
-                        </td>
+                        <!-- <td class="border-solid text-center">
+                            <div id="yes" class="text-green-500 font-semibold "><i class="fa-sharp-duotone fa-solid fa-check"></i></div>
+                            <div id="no" class="text-red-500 font-semibold"><i class="fa-sharp-duotone fa-solid fa-xmark"></i></div>
+                        </td> -->
                         <td class="border-solid h-24">
                             <div class="text-center text-blue-500 font-bold">
                                 15%
                             </div>
                         </td>
                         <td class="border-solid h-24 text-center p-4 flex justify-center items-center">
-                            <!-- <button id="active-{{ $row->id }}" class="py-2 px-3 rounded-md off"></button> -->
-                            <!-- <input type="checkbox" class="toggle" id> -->
                             <div id="display" class="display-toggle">
-                                <div class="indicator" id="indicator-{{ $row->id }}" data-id="{{ $row->id }}">
+                                <div class="indicator" id="indicator-{{ $product->id }}" data-id="{{ $product->id }}">
 
                                 </div>
                             </div>
                         </td>
                     </tr>
                     @endforeach
+                    <?php
+                    $term++;
+                    ?>
                 </tbody>
             </table>
             <div class=" text-center py-4 font-semibold uppercase">AB-Project</div>
@@ -141,59 +136,25 @@
         element.addEventListener('click', function() {
             const id = element.querySelector('.indicator').getAttribute('data-id');
             const targetElement = document.getElementById('toggleDisplay-' + id);
-            console.log(id);
+            const yesElement = document.getElementById('yes');
+            const noElement = document.getElementById('no');
             element.classList.toggle('active');
             if (targetElement) {
                 targetElement.classList.toggle('nice');
+                yesElement.style.display = 'block';
+                noElement.style.display = 'none';
+            } else {
+                yesElement.style.display = 'none';
+                noElement.style.display = 'block';
             }
+
         });
     });
-    // document.querySelectorAll('.display-toggle').forEach(element => {
-    //     element.addEventListener('click', function() {
-    //         console.log('Clicked:', element);
-    //         const id = element.dataset.id;
-    //         console.log('ID:', id); // Kiểm tra giá trị của id
-
-    //         const targetElement = document.getElementById('toggleDisplay');
-    //         if (targetElement) {
-    //             if (!element.classList.contains('active')) {
-    //                 element.classList.toggle('active');
-    //             } else {
-    //                 element.classList.remove('active');
-    //             }
-    //         } else {
-    //             console.log('No element found with ID:', 'toggleDisplay-' + id);
-    //         }
-    //     });
-    // });
 </script>
 @endsection
 
 @section('scripts')
 <script>
-    // document.getElementById('Searchbutton').addEventListener('click', function() {
-    //     const toggleSection = document.getElementById('toggleSection');
-    //     if (toggleSection.style.display === 'none') {
-    //         toggleSection.style.display = 'block';
-    //     } else {
-    //         toggleSection.style.display = 'none';
-    //     }
-    // });
-    // const toggle = document.getElementById('display');
-    // toggle.addEventListener('click', function() {
-    //     toggle.classList.toggle('active');
-    // });
 
-    // document.querySelectorAll('[id^="active-"]').forEach(button => {
-    //     button.addEventListener('click', function() {
-    //         if (button.classList.contains('off')) {
-    //             button.classList.remove('off');
-    //             button.classList.add('on');
-    //         } else {
-    //             button.classList.remove('on');
-    //             button.classList.add('off');
-    //         }
-    //     });
-    // });
 </script>
 @endsection
