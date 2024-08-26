@@ -10,86 +10,70 @@
 
 @section('content')
 
-
 <body class="bg-slate-300">
     <div class="mx-2 mt-3 shadow-md">
         <div class="border-2 bg-white rounded-lg">
             <div class="flex justify-between items-center px-3 py-1 border-b-2 bg-white shadow-lg" style="position: sticky; top: 0; z-index:1">
-                <span class="pr-2 text-[18px] uppercase font-bold py-2">User</span>
+                <span class="pr-2 text-[18px] uppercase font-bold py-2">Approved</span>
                 <div class="flex justify-center items-center gap-2">
-                    <!-- Search -->
-                    <!-- fix -->
-                    <!-- <button class="py-2 px-4 rounded-md border bg-light font-medium">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button> -->
-                    <!-- delete -->
-                    <!-- <button id="delete-selected" class="py-2 px-4 rounded-md border bg-light font-medium">
-                        <i class="fa-solid fa-trash"></i>
-                    </button> -->
-                    <a href="{{route('user.create')}}">
-                        <button class="py-2 px-3 rounded-md border text-xs font-medium bg-blue-500 text-white">
-                            <i class="fa-solid fa-plus pr-1 py-2"></i>Create
+                    <div class="flex justify-center items-center gap-2">
+                        <button onclick="window.location='{{ route('admin.approved.approve') }}' " class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
+                            <div class="px-1">Approved Requests</div>
                         </button>
-                    </a>
-
+                        <button onclick="window.location='{{ route('pages.approve_accept') }}' " class=" py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
+                            <div class="px-1">Accept Requests</div>
+                        </button>
+                        <button onclick="window.location='{{ route('pages.approve_refushed') }}' " class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
+                            <div class="px-1">Refuse Requests</div>
+                        </button>
+                    </div>
                 </div>
             </div>
             <table class="table-auto w-full">
                 <thead class="py-5 border-b-2 w-100">
                     <tr class="my-5 bg-slate-300">
-                        <th class="text-yellow-500 text-[15px] py-4 text-center">Id</th>
-                        <th class="text-yellow-500 text-[15px] pl-2 text-center">Name</th>
-                        <th class="text-yellow-500 text-[15px] px-3 text-center">Account</th>
-                        <th class="text-yellow-500 text-[15px] px-3 text-center">Password</th>
-                        <th class="text-yellow-500 text-[15px] px-3 text-center">Role</th>
-                        <th class="text-yellow-500 text-[15px] px-3 text-center">Option</th>
+                        <th class="text-yellow-500 text-[15px] p-4 text-center">ID</th>
+                        <th class="text-yellow-500 text-[15px] pl-2 text-center">Barcode</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Giá Trước </th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Giá Sau</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Bắt đầu</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Kết thúc</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Kênh</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Tình trạng</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Thời gian tạo</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Người Tạo</th>
+                        <th class="text-yellow-500 text-[15px] px-3 text-center">Người Kiểm Duyệt</th>
                     </tr>
                 </thead>
                 <tbody class="">
                     <?php
-                    $term = 0;
-                    $last_up_date = '';
+                    $term = 1;
                     ?>
-                    @foreach ($members as $row)
-                    <form action="{{ route('product.delete.selected') }}" method="POST">
-                        <tr id="" class="font-semibold hover:bg-blue-100 border-b-2 m-1">
-                            <td class="w-1/12 text-center">
-                                <span class="ml-2">{{ $row->id }}</span>
-                            </td>
-                            <td class="p-2 text-center">{{ $row->name }}</td>
-                            <td class="p-2 text-center ">{{ $row->user_name }}</td>
-                            <td class="p-2 text-center ">{{ $row->password }}</td>
-                            <th class=" text-[15px] px-3 text-center">
-                                @if($row->name == 'Nguyễn Thành Danh')
-                                <div class="uppercase font-bold">admin</div>
-                                @elseif($row->name == 'Lê Minh Quốc')
-                                <div class="uppercase font-bold">manager</div>
-                                @else
-                                <div class="uppercase font-bold">user</div>
-                                @endif
-                            </th>
-                            @if($row->name != 'Nguyễn Thành Danh')
-                            <td class="p-2 text-center flex justify-center items-center gap-x-3">
-                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    <a href="#">Delete</a>
-                                </button>
-                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    <a href="#">Fix</a>
-                                </button>
-                            </td>
-                            @endif
-                        </tr>
-                    </form>
+                    @foreach($approvedRequests as $request)
+                    <tr class="font-semibold hover:bg-blue-100 border-b-2 m-1 ">
+                        <td class="text-center py-4">{{ $term}}</td>
+                        <td class="text-center">{{ $request->barcode }}</td>
+                        <td class="text-center">{{ $request->price }}</td>
+                        <td class="text-center">{{ $request->discount }}</td>
+                        <td class="text-center">{{ date('d-m-Y', strtotime($request->start_date))}}</td>
+                        <td class="text-center">{{ date('d-m-Y', strtotime($request->end_date)) }}</td>
+                        <td class="text-center">{{ $request->platform }}</td>
+                        <td class="text-center">{{ date('d-m-Y', strtotime($request->created_at)) }}</td>
+                        <td class="text-center">@if ($request->is_approved == 0) <div class="text-orange-500 font-bold">Chưa Duyệt</div> @elseif ($request->is_approved == 1) <div class="text-orange-500 font-bold">Đã Duyệt</div> @elseif ($request->is_approved == 2) <div class="text-red-500 font-bold">Không Duyệt</div> @endif</td>
+                        <td class="text-center">{{ $request->name }}</td>
+                        <td class="text-center">{{ $request->approved_by}}</td>
+                    </tr>
                     <?php
-                    $term++
+                    $term++;
                     ?>
                     @endforeach
                 </tbody>
             </table>
-            <div class="text-center py-4 font-semibold uppercase">AB-Project</div>
+            <div class="text-center py-4 font-semibold uppercase border-t-2">AB-Project</div>
         </div>
     </div>
 </body>
+
 <script>
     document.querySelectorAll('.display-toggle').forEach(element => {
         element.addEventListener('click', function() {

@@ -11,10 +11,10 @@
 <body class="bg-slate-200">
     <div class="flex justify-center items-center p-5">
         <div class="form w-[700px] h-auto my-[20px] bg-white shadow-lg p-5 rounded-lg">
-            <form action="{{ route('product.product') }}" method="POST" class="px-2 border-2 rounded-lg">
+            <form action="{{ route('admin.product.product') }}" method="POST" class="px-2 border-2 rounded-lg">
                 @csrf
                 <div class="uppercase py-2">
-                    <div class="px-2 font-bold">New Product</div>
+                    <div class="px-2 font-bold">Create New Product</div>
                 </div>
                 <div class="p-4">
                     <div class="">
@@ -48,6 +48,14 @@
                     <div class="pt-2">
                         <div class="font-semibold">The price: LamThao</div>
                         <input class="border-2 w-full rounded-md py-1" type="text" name="lamthao">
+                    </div>
+                    <div class="pt-3">
+                        <div class="font-semibold">The price: Watsons</div>
+                        <input class="border-2 w-full rounded-md py-1" type="text" name="watsons">
+                    </div>
+                    <div class="pt-2">
+                        <div class="font-semibold">The price: Socialla</div>
+                        <input class="border-2 w-full rounded-md py-1" type="text" name="socialla">
                     </div>
                 </div>
                 <div class="flex justify-end items-center px-2 py-3 gap-x-2 border-t-2">

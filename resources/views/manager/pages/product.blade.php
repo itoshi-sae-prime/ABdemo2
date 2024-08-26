@@ -23,7 +23,7 @@
                     </button>
                     <!-- Search -->
                     <div class="border-2 rounded-md">
-                        <form class="flex" action="{{ route('pages.product') }}" method="GET" id="searchForm">
+                        <form class="flex" action="{{ route('manager.pages.product') }}" method="GET" id="searchForm">
                             <input class="p-2 w-72 rounded-md input-search-ajax" id="searchQuery" name="search" placeholder="Search for products...">
                             <button class="py-2 px-4 bg-light font-medium uppercase flex justify-center items-center" style="outline:none" type="submit">
                                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -101,7 +101,7 @@
                         <th class="text-yellow-500 text-[15px] px-3 text-center">ABBeauty</th>
                         <th class="text-yellow-500 text-[15px] px-3 text-center">Average</th>
                         <th class="text-yellow-500 text-[15px] px-3 text-center">Option</th>
-                        <th class="text-yellow-500 text-[15px] text-center">Display</th>
+                        <!-- <th class="text-yellow-500 text-[15px] text-center">Display</th> -->
                     </tr>
                 </thead>
                 <tbody class="">
@@ -139,7 +139,7 @@
                             <td class="border-solid h-24">
                                 <div class="flex justify-center">
                                     <button>
-                                        <a href="{{ route('pages.history', ['id' => $row->id]) }}" class="bg-blue-500 text-white font-medium py-2 px-4 text-center rounded-lg">Detail</a>
+                                        <a href="{{ route('history', ['id' => $row->id]) }}" class="bg-blue-500 text-white font-medium py-2 px-4 text-center rounded-lg">Detail</a>
                                     </button>
                                 </div>
                             </td>

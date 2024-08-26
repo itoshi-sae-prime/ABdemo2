@@ -23,7 +23,7 @@ class CheckRole
         }
 
         // Retrieve the user's role from the session
-        $userRole = session('user')->Role;
+        $userRole = session('user')->name;
 
         // Check if the user has the required role
         if ($userRole !== $role) {

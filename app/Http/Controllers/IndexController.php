@@ -11,14 +11,45 @@ use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
-    // public function home()
-    // {
-    //     return view('pages.home');
-    // }
     public function createpage()
     {
         return view('create');
     }
+    public function createUserpage()
+    {
+        return view('createUser');
+    }
+    public function showUpdateForm($id)
+    {
+        $products = DB::table('products')->where('id', $id)->first();
+        return view('updateLink', ['products' => $products]);
+    }
+    public function changesLink(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'ab_beautyworld' => 'nullable|string|max:255',
+            'hasaki' => 'nullable|string|max:255',
+            'guardian' => 'nullable|string|max:255',
+            'thegioiskinfood' => 'nullable|string|max:255',
+            'lamthao' => 'nullable|string|max:255',
+        ]);
+
+        // Find the product by ID
+        $product = Sanpham::findOrFail($id);
+
+        // Update the product details with the new data from the form
+        $product->ab_beautyworld = $validatedData['ab_beautyworld'] ?: '';
+        $product->hasaki = $validatedData['hasaki'] ?: '';
+        $product->guardian = $validatedData['guardian'] ?: '';
+        $product->thegioiskinfood = $validatedData['thegioiskinfood'] ?: '';
+        $product->lamthao = $validatedData['lamthao'] ?: '';
+        // Save the updated product information
+        $product->save();
+
+        // Redirect back with a success message
+        return redirect()->route('history', $id)->with('success', 'Product details updated successfully.');
+    }
+
     public function urlpage()
     {
         $products = DB::table('products')
@@ -29,9 +60,25 @@ class IndexController extends Controller
             ->select('products.id', 'products.product_barcode', 'products.brand', 'products.product_name', 'products.ab_beautyworld', 'now_prices.p_ab')
             ->get();
 
-        return view('admin.pages.urls', [
-            'products' => $products,
-        ]);
+        $user = session('user');
+        if ($user && isset($user->name)) {
+            switch ($user->name) {
+                case 'Nguyễn Thành Danh':
+                    $view = 'admin.pages.urls';
+                    break;
+                case 'Lê Minh Quốc':
+                    $view = 'manager.pages.urls';
+                    break;
+                default:
+                    $view = 'user.pages.urls';
+                    break;
+            }
+            return view($view, [
+                'products' => $products,
+            ]);
+        } else {
+            return redirect()->route('login');
+        }
     }
     public function historypage($id)
     {
@@ -56,6 +103,7 @@ class IndexController extends Controller
             'new_p' => $latestPrices,
         ]);
     }
+    public function updateLink() {}
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -205,23 +253,23 @@ class IndexController extends Controller
                 $price->p_hsk,
                 $price->p_gu,
                 $price->p_tgs,
-                $price->p_lt
+                $price->p_lt,
             ];
             $averageValues[$price->p_id] = $this->averageWithoutZero($values);
         }
         $userId = session('user');
         if ($userId) {
             // Fetch the user's role from the database using the user ID
-            $user = DB::table('user_new')->where('id', $userId->Id)->first();
+            $user = DB::table('user_login')->where('id', $userId->id)->first();
 
-            $role = $user ? $user->Role : null;
+            $role = $user ? $user->name : null;
 
             if ($user && isset($role)) {
                 switch ($role) {
-                    case 'admin':
+                    case 'Nguyễn Thành Danh':
                         $view = 'admin.pages.product';
                         break;
-                    case 'manager':
+                    case 'Lê Minh Quốc':
                         $view = 'manager.pages.product';
                         break;
                     default:
@@ -342,12 +390,21 @@ class IndexController extends Controller
             'guardian' => 'required|max:255',
             'thegioiskinfood' => 'required|max:255',
             'lamthao' => 'required|max:255',
+            'watsons' => 'required|max:255',
+            'socialla' => 'required|max:255'
         ]);
-        // var_dump($validatedData);
-        // die();
-        // Create the product and log the result
         $product = Sanpham::create($validatedData);
-        return redirect()->route('pages.product')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.pages.product')->with('success', 'Product created successfully.');
+    }
+    public function updateUserlist(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'user_name' => 'required|max:255',
+            'password' => 'required|max:255',
+        ]);
+        $user = DB::table('user_login')->insert($validatedData);
+        return redirect()->route('pages.user_list')->with('success', 'Product created successfully.');
     }
     public function deleteSelected(Request $request)
     {

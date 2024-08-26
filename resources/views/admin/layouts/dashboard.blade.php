@@ -39,7 +39,7 @@
                                 <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Price Change</span></a>
                             </li> -->
                             <li class="mb-1">
-                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Approval List</span></a>
+                                <a href="{{route('admin.approved.approve')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Approval List</span></a>
                             </li>
                             <!-- <li class="mb-1">
                                 <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Discount List</span></a>
@@ -56,7 +56,7 @@
                 <ul>
                     <li class="mb-1 border-t-2 border-yellow-200">
                         @if(session()->has('user'))
-                        <div class="text-center pt-3 uppercase font-semibold text-yellow-500">{{ session('user')->Role }}</div>
+                        <div class="text-center pt-3 uppercase font-semibold text-yellow-500">{{ session('user')->name }}</div>
                         @endif
                         <form action="{{ route('logout')}}" method="POST">
                             @csrf

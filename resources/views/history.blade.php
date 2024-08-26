@@ -13,17 +13,36 @@
 <body class="px-5 py-3">
     <?php
     $term = 0;
+    $user = session('user');
+    $role = $user->name;
+    $route = '';
+    switch ($role) {
+        case 'Nguyễn Thành Danh':
+            $route = route('admin.pages.product'); // Admin route
+            break;
+        case 'Lê Minh Quốc':
+            $route = route('manager.pages.product'); // Manager route
+            break;
+        default:
+            $route = route('user.pages.product'); // User route
+            break;
+    }
     ?>
     <div class="w-[100%] mx-auto border-2">
-        <div class="product m-3 border-4 border-solid rounded-lg ">
+        <div class="product m-3 border-2 border-solid rounded-lg ">
             <div class="m-[18px]">
                 <div class="flex justify-between items-center">
                     <div class="font-semibold  tracking-wide m-2 uppercase pb-2 text-black" style="font-size: 30px;">Details Of Product Price Changes</div>
                     <div class="gap gap-x-4">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            <a href="{{ route('changesform',[$product->product_barcode,$new_p[$term]->p_ab]) }}">Fix</a>
+                        @if($user->name =='Nguyễn Thành Danh' || $user->name =='Lê Minh Quốc')
+                        <button onclick="window.location='{{ route('changesform',[$product->product_barcode,$new_p[$term]->p_ab]) }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Changes Prices
                         </button>
-                        <button onclick="window.history.back();" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <a href="{{ route('changesLink', ['id' => $product ->id]) }}">Changes Link</a>
+                        </button>
+                        @endif
+                        <button onclick="window.location='{{ $route }}';" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Back
                         </button>
                     </div>

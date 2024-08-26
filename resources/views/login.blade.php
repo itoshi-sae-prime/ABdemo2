@@ -37,11 +37,11 @@
             <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Login</h1>
 
             <!-- Error Message Display -->
-            @if ($errors->has('error'))
+            <!-- @if ($errors->has('error'))
             <div id="error-message" style="display:none;">
                 {{ $errors->first('error') }}
             </div>
-            @endif
+            @endif -->
             <!-- @if (session('message'))
             <div class="bg-blue-100 text-blue-700 p-3 rounded mb-4">
                 {{ session('message') }}
@@ -52,8 +52,8 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-                    <input type="email" id="email" name="email" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="text" class="block text-gray-700 font-medium mb-2">Account</label>
+                    <input type="text" id="account" name="account" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 <div class="mb-6">
                     <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>

@@ -19,5 +19,7 @@ class Sanpham extends Model
         'guardian',
         'thegioiskinfood',
         'lamthao',
+        'watsons',
+        'socialla'
     ];
 }

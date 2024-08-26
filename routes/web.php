@@ -40,7 +40,6 @@ use Illuminate\Support\Facades\Auth;
 // Route::post('/import', [ImportController::class, 'import'])->name('import');
 
 // Auth::routes();
-
 // Route::get('/dashboard', [IndexPage::class, 'dashboardpage'])->middleware('role:admin,manager,user');
 Route::get('/', [loginController::class, 'loginview'])->name('loginview');
 Route::post('/login', [loginController::class, 'login'])->name('login');
@@ -49,8 +48,12 @@ Route::get('export', [ExportController::class, 'export'])->name('export');
 Route::post('import', [ImportController::class, 'import'])->name('import');
 Route::get('reset', [IndexPage::class, 'reset'])->name('reset');
 Route::get('history/{id}', [IndexPage::class, 'historypage'])->name('history');
+Route::post('pro_request', [PromotionController::class, 'sendRequest'])->name('send_promotion_request');
+Route::post('create_promotion', [PromotionController::class, 'createPromotion'])->name('createPromotion');
+Route::get('/changesform/{barcode}/{price}', [PromotionController::class, 'promotionForm'])->name('changesform');
+
 // Route::get('makeChanges', [PromotionController::class, 'promotionForm'])->name('changesform');
-Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['role:Nguyễn Thành Danh']], function () {
     Route::get('dashboard', [AdminController::class, 'dashboardpage_adm'])->name('admin.pages.dashboard');
     Route::get('categories', [IndexPage::class, 'categoriespage'])->name('pages.categories');
     Route::get('brand', [IndexPage::class, 'brandpage'])->name('pages.brand');
@@ -58,23 +61,34 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function () 
     Route::get('urls', [IndexPage::class, 'urlpage'])->name('admin.pages.urls');
     Route::get('list_user', [AdminController::class, 'userlist'])->name('pages.user_list');
     Route::get('product', [IndexPage::class, 'productsRoot'])->name('admin.pages.product');
-    Route::post('product/add_them', [IndexPage::class, 'store'])->name('admin.product.product');
+    Route::get('history/{id}/link', [IndexPage::class, 'showUpdateForm'])->name('changesLink');
+    Route::post('history/{id}/link', [IndexPage::class, 'changesLink'])->name('changesLink');
     Route::delete('products/delete-selected', [IndexPage::class, 'deleteSelected'])->name('product.delete.selected');
     Route::get('product/new', [IndexPage::class, 'createpage'])->name('product.create');
+    Route::post('product/add_them', [IndexPage::class, 'store'])->name('admin.product.product');
+    Route::get('list_user/new', [IndexPage::class, 'createUserpage'])->name('user.create');
+    Route::post('product/add_user', [IndexPage::class, 'updateUserlist'])->name('admin.user');
+    Route::get('get_appr', [PromotionController::class, 'getApporve'])->name('admin.approved.approve');
+    Route::get('get_accept', [PromotionController::class, 'getApporveAccept'])->name('pages.approve_accept');
+    Route::get('get_refuse', [PromotionController::class, 'getApporveRefused'])->name('pages.approve_refushed');
+    Route::post('refuse_promotion', [PromotionController::class, 'refusePromotion'])->name('refusePromotion');
     Route::post('create_promotion', [PromotionController::class, 'createPromotion'])->name('createPromotion');
-    Route::get('/changesform/{barcode}/{price}', [PromotionController::class, 'promotionForm'])->name('changesform');
-    Route::post('pro_request', [PromotionController::class, 'sendRequest'])->name('send_promotion_request');
+    Route::post('product/add_new', [IndexPage::class, 'store'])->name('admin.product.add');
+    Route::post('product/changes_link', [IndexPage::class, 'store'])->name('admin.product.add');
 });
-Route::group(['prefix' => 'manager', 'middleware' => ['role:manager']], function () {
+
+Route::group(['prefix' => 'manager', 'middleware' => ['role:Lê Minh Quốc']], function () {
     Route::get('dashboard', [ManagerController::class, 'dashboardpage_manager'])->name('manager.pages.dashboard');
     Route::get('product', [IndexPage::class, 'productsRoot'])->name('manager.pages.product');
     Route::post('product/add_them', [ManagerController::class, 'store'])->name('manager.product.add');
     Route::delete('products/delete-selected', [ManagerController::class, 'deleteSelected'])->name('manager.product.delete.selected');
     Route::get('product/new', [ManagerController::class, 'createpage'])->name('manager.product.create');
+    Route::get('urls', [IndexPage::class, 'urlpage'])->name('manager.pages.urls');
+    Route::get('get_appr', [PromotionController::class, 'getApporve'])->name('manager.approved.approve');
     // Route::get('/manager/dashboard', [ManagerController::class, 'index']);
 });
 
-Route::group(['prefix' => 'user', 'middleware' => ['role:user']], function () {
+Route::group(['prefix' => 'user'], function () {
     Route::get('dashboard', [UserController::class, 'dashboardpage_user'])->name('user.pages.dashboard');
     Route::get('/product', [IndexPage::class, 'productsRoot'])->name('user.pages.product');
     Route::post('product/add_them', [IndexPage::class, 'store'])->name('user.product.add');

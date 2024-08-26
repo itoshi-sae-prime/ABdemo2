@@ -44,7 +44,7 @@
                 <ul>
                     <li class="mb-1 border-t-2 border-yellow-200">
                         @if(session()->has('user'))
-                        <div class="text-center pt-3 uppercase font-semibold text-yellow-500">{{ session('user')->Role }}</div>
+                        <div class="text-center pt-3 uppercase font-semibold text-yellow-500">{{ session('user')->name}}</div>
                         @endif
                         <form action="{{ route('logout')}}" method="POST">
                             @csrf

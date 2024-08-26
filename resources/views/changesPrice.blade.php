@@ -72,17 +72,13 @@
 
 <body>
     <div class="form-container ">
-        <form action="" method="" class="styled-form">
+        <form action="{{route('send_promotion_request')}}" method="POST" class="styled-form">
             @csrf
-            <input type="text" style="display:none" class="styled-input" name="barcode" placeholder="barcode" value="">
+            <input type="text" style="display:none" class="styled-input" name="barcode" placeholder="barcode" value="{{$barcode}}">
             <input type="text" style="display:none" class="styled-input" name="name">
-            <input type="text" style="display:none" id="b_value" name="b_value" value="">
+            <input type="text" style="display:none" id="b_value" name="b_value" value="{{$price}}">
             <div class="form-group">
                 <label for="value">Giá trị thay đổi:</label>
-                <input type="text" class="styled-input" id="value" name="value" value="" require>
-            </div>
-            <div class="form-group">
-                <label for="value">Link thay đổi:</label>
                 <input type="text" class="styled-input" id="value" name="value" value="" require>
             </div>
             <div class="form-group">

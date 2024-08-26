@@ -800,9 +800,6 @@ video {
 .border-2 {
   border-width: 2px;
 }
-.border-4 {
-  border-width: 4px;
-}
 .border-y-2 {
   border-top-width: 2px;
   border-bottom-width: 2px;
@@ -889,9 +886,6 @@ video {
 }
 .bg-right {
   background-position: right;
-}
-.p-1 {
-  padding: 0.25rem;
 }
 .p-2 {
   padding: 0.5rem;
@@ -1001,6 +995,9 @@ video {
 }
 .text-\[20px\] {
   font-size: 20px;
+}
+.text-\[5px\] {
+  font-size: 5px;
 }
 .text-sm {
   font-size: 0.875rem;

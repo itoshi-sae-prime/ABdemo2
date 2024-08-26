@@ -14,7 +14,7 @@ class AdminController extends Controller
     }
     public function userlist()
     {
-        $members = DB::table('user_new')->get();
+        $members = DB::table('user_login')->get();
 
         return view('admin.pages.user', ['members' => $members]);
     }

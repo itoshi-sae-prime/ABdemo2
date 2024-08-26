@@ -1,4 +1,4 @@
-@extends('admin.layouts.dashboard')
+@extends('manager.layouts.dashboard')
 
 @section('title', 'Product History')
 

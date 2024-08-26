@@ -17,10 +17,10 @@
             <div class="flex justify-between items-center px-3 py-1 border-b-2 bg-white shadow-lg" style="position: sticky; top: 0; z-index:1">
                 <span class="pr-2 text-[18px] uppercase font-bold">Product</span>
                 <div class="flex justify-center items-center gap-2">
-                    <button class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
+                    <!-- <button class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
                         <i class="fa-solid fa-filter pr-1"></i>
                         <div class="px-1">FILTERS</div>
-                    </button>
+                    </button> -->
                     <!-- Search -->
                     <div class="border-2 rounded-md">
                         <form class="flex" action="{{ route('admin.pages.product') }}" method="GET" id="searchForm">

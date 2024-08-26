@@ -30,12 +30,10 @@ class PromotionController extends Controller
     public function sendRequest(Request $request)
     {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $check = new Check();
-        $infor = $check->checkUser()[0];
+        $userId = session('user');
+        $infor = DB::table('user_login')->where('id', $userId->id)->first();
+
         $name = $infor->name;
-
-
-
         $curren_time = now();
         $barcode = $request['barcode'];
         $price = $request['b_value'];
@@ -59,77 +57,88 @@ class PromotionController extends Controller
             'created_at' => $curren_time,
             'updated_at' => $curren_time
         ]);
-        return redirect()->route('admin.pages.product');
+
+        if ($infor->user_name == 'ABW1570') {
+            return redirect()->route('admin.approved.approve');
+        } else if ($infor->name == 'Lê Minh Quốc') {
+            return redirect()->route('manager.pages.product');
+        } else {
+            return redirect()->route('user.pages.product');
+        }
     }
     public function getApporve(Request $request)
     {
-        $approvedRequests = DB::table('approved')
-            ->where('is_approved', 0)
-            ->get();
-
-        return view('appr.approver', ['approvedRequests' => $approvedRequests]);
+        $approvedRequests = DB::table('approved')->where('is_approved', 0)->get();
+        $user = session('user');
+        return view('admin.approved.approve', ['approvedRequests' => $approvedRequests]);
+        // if ($user->name === 'Nguyễn Thành Danh') {
+        //     return view('admin.approved.approve', ['approvedRequests' => $approvedRequests]);
+        // } elseif ($user->name === 'Lê Minh Quốc') {
+        //     return view('manager.approved.approve', ['approvedRequests' => $approvedRequests]);
+        // } else {
+        //     // Xử lý trường hợp mặc định nếu cần thiết
+        //     return view('login');
+        // }
     }
     public function getApporveRefused(Request $request)
     {
-        $approvedRequests = DB::table('approved')
-            ->where('is_approved', 2)
-            ->get();
-
-
-        return view('appr.approver', ['approvedRequests' => $approvedRequests, 'page' => 'refuse']);
+        $approvedRequests = DB::table('approved')->where('is_approved', 2)->get();
+        return view('admin.approved.refush', ['approvedRequests' => $approvedRequests]);
     }
     public function getApporveAccept(Request $request)
     {
-        $approvedRequests = DB::table('approved')
-            ->whereIn('is_approved', [1, 2])
-            ->get();
-
-        return view('appr.approver', ['approvedRequests' => $approvedRequests, 'page' => 'accept']);
+        $approvedRequests = DB::table('approved')->where('is_approved', 1)->get();
+        return view('admin.approved.accept', ['approvedRequests' => $approvedRequests]);
     }
 
     public function refusePromotion(Request $request)
     {
-        $check = new Check();
-        $infor = $check->checkUser()[0];
+        $userId = session('user');
+        $infor = DB::table('user_login')->where('id', $userId->id)->first();
         $approver = $infor->name;
         DB::table('approved')
-            ->where('id', $request->ap_id)
+            ->where('id',  $request->id)
             ->update(['approved_by' => $approver, 'is_approved' => 2]);
-        return redirect()->route('getApporve');
+        return redirect()->route('pages.approve_refushed');
     }
-
 
     public function createPromotion(Request $request)
     {
-        $check = new Check();
-        $infor = $check->checkUser()[0];
-
-
+        $userId = session('user');
+        $name = $userId->name;
+        $infor = DB::table('user_login')->where('id', $userId->id)->first();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $barcode = $request->barcode;
         $name = $request->name;
+        // Lấy thông tin từ session và dữ liệu đã xác thực
         $approver = $infor->name;
+
+        // Cập nhật cơ sở dữ liệu
         DB::table('approved')
-            ->where('id', $request->ap_id)
-            ->update(['approved_by' => $approver, 'is_approved' => true]);
-
-
-        $value = str_replace(".", "", $request->value);
+            ->where('id', $request->id)
+            ->update([
+                'approved_by' => $approver,
+                'is_approved' => true,
+            ]);
+        // Chuẩn bị dữ liệu khuyến mãi
+        $value = str_replace(".", "", $request->discount);
         $curren_time = now();
         $dataP = new API();
         $id = $dataP->getID($barcode)->id;
 
-        $log = "update_price_barcode:" . $barcode . "_to_" . $value . "_by_:" . (string)$name . "_at_" . $curren_time;
-        $check->logAction($log);
 
+        $log = "update_price_barcode:" . $barcode . "_to_" . $value . "_by_:" . $name . "_at_" . $curren_time;
+        // Đảm bảo $check được khởi tạo đúng
+
+        // Gửi yêu cầu API
         $url = 'https://apis.haravan.com/com/promotions.json';
-        $bearerToken = '8672E3C68AF157BDE70E4CC6DF58BF09CDED16AFA455BF167E45D15055094122';
-
+        // $bearerToken = env('API_BEARER_TOKEN');
+        session(['bearerToken' => '8672E3C68AF157BDE70E4CC6DF58BF09CDED16AFA455BF167E45D15055094122']);
+        $bearerToken = session('bearerToken');
         $body = [
             "promotion" => [
-                "name" => "CT KM CANH TRANH |" . $barcode . "|" . $value . "| by :" . $name  . "| at :" . $curren_time . "",
+                "name" => "CT KM CANH TRANH |" . $barcode . "|" . $value . "| by :" . $name  . "| at :" . $curren_time,
                 "ends_at" => $end_date . "T01:00:00Z",
                 "starts_at" => $start_date . "T01:00:00Z",
                 "value" => $value,
@@ -139,9 +148,9 @@ class PromotionController extends Controller
                 "applies_to_id" => 0,
                 "order_over" => null,
                 "promotion_apply_type" => 0,
-                "created_at" => "2024-01-16T11:57:10.886Z",
-                "updated_at" => "2024-01-16T11:57:10.886Z",
-                "first_name" => " tạo từ app",
+                "created_at" => $curren_time->toDateTimeString(), // Sử dụng ngày giờ động
+                "updated_at" => $curren_time->toDateTimeString(), // Sử dụng ngày giờ động
+                "first_name" => "tạo từ app",
                 "last_name" => "Quốc",
                 "create_user" => 200001271639,
                 "applies_customer_group_id" => null,
@@ -165,23 +174,23 @@ class PromotionController extends Controller
             ]
         ];
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $bearerToken,
-            'Content-Type' => 'application/json'
-        ])->post($url, $body);
-
-        if ($response->successful()) {
-            // Xử lý khi gọi API thành công
-            $return = $response->json();
-            DB::table('promotion_id')->insert([
-                'id_product' => $id,
-                'id_promotion' => $return['promotion']['id'],
-            ]);
-            return redirect()->route('getApporve');
-            //  return $return = response()->json(['success' => true, 'data' => $response->json()]);
-        } else {
-            // Xử lý khi gọi API thất bại
-            return response()->json(['success' => false, 'message' => $response->body()]);
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $bearerToken,
+                'Content-Type' => 'application/json'
+            ])->post($url, $body);
+            if ($response->successful()) {
+                $return = $response->json();
+                DB::table('promotion_id')->insert([
+                    'id_product' => $id,
+                    'id_promotion' => $return['promotion']['id'],
+                ]);
+                return redirect()->route('admin.approved.approve');
+            } else {
+                return response()->json(['success' => false, 'message' => $response->body()]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()]);
         }
     }
 }
