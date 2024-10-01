@@ -20,9 +20,9 @@
                     <div class="py-3">
                         <div class="flex">
                             <div class="font-semibold">Name</div>
-                            <p class="px-2 text-red-500 font-bold text-[5px]">*Ghi Đầy Đủ Họ Tên*</p>
+                            <div class="text-red-500 px-2">*Vui lòng nhập đầy đủ họ tên</div>
                         </div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="name">
+                        <input class="border-2 w-full rounded-md py-1" type="text" name="name" spellcheck="true">
                     </div>
                     <div class="py-3">
                         <div class="font-semibold">Account</div>

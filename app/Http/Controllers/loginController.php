@@ -37,15 +37,17 @@ class loginController extends Controller
             // Lưu thông tin người dùng vào session
 
             session(['user' => $user]);
-            // Redirect to the intended page
-            switch ($user->name) {
-                case 'Nguyễn Thành Danh':
+            $permission = DB::table('permission_user')->where('id_user',  $user->id)->first();
+            switch ($permission->id_per) {
+                case '1':
                     return redirect()->intended('admin/dashboard');
-                case 'Lê Minh Quốc':
+                case '2':
                     return redirect()->intended('manager/dashboard');
                 default:
                     return redirect()->intended('user/dashboard');
             }
+            // Redirect to the intended page
+
         } else {
             // Trả về thông báo lỗi nếu không đăng nhập được
             return redirect()->back()->withErrors([

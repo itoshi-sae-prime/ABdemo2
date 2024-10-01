@@ -20,13 +20,13 @@
             /* Hoặc bất kỳ kích thước nào bạn muốn */
             height: 100vh;
             /* Hoặc bất kỳ chiều cao nào bạn muốn */
-            background: linear-gradient(to left, black, yellow);
+            background: linear-gradient(to left, black, white);
         }
     </style>
 </head>
 
-<body class="gradient-background  flex items-center justify-center min-h-screen">
-    <div class="flex items-center justify-center space-x-8 w-full max-w-4xl">
+<body class="gradient-background flex items-center justify-center min-h-screen">
+    <div class="flex items-center justify-center space-x-8 w-96 max-w-4xl">
         <!-- Image Section -->
         <div class="md:block">
             <div class="w-[500px] h-[500px] bg-image" alt="My Image"></div>
@@ -34,19 +34,14 @@
 
         <!-- Form Section -->
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-            <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Login</h1>
+            <h1 class="text-2xl font-bold mb-6 text-center bg-black py-2 text-white rounded-md">Lung Tung </h1>
 
             <!-- Error Message Display -->
-            <!-- @if ($errors->has('error'))
+            @if ($errors->has('error'))
             <div id="error-message" style="display:none;">
                 {{ $errors->first('error') }}
             </div>
-            @endif -->
-            <!-- @if (session('message'))
-            <div class="bg-blue-100 text-blue-700 p-3 rounded mb-4">
-                {{ session('message') }}
-            </div>
-            @endif -->
+            @endif
 
             <!-- Login Form -->
             <form method="POST" action="{{ route('login') }}">

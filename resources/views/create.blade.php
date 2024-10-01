@@ -31,35 +31,35 @@
                     </div>
                     <div class="pt-3">
                         <div class="font-semibold">The price: AB</div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="ab_beautyworld">
+                        <input class="border-2 w-full rounded-md py-1" type="link" name="ab_beautyworld">
                     </div>
                     <div class="pt-3">
                         <div class="font-semibold">The price: Hasaki</div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="hasaki">
+                        <input class="border-2 w-full rounded-md py-1" type="link" name="hasaki">
                     </div>
                     <div class="pt-3">
                         <div class="font-semibold">The price: Guardian</div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="guardian">
+                        <input class="border-2 w-full rounded-md py-1" type="link" name="guardian">
                     </div>
                     <div class="pt-3">
                         <div class="font-semibold">The price: Thegioiskinfood</div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="thegioiskinfood">
+                        <input class="border-2 w-full rounded-md py-1" type="link" name="thegioiskinfood">
                     </div>
                     <div class="pt-2">
                         <div class="font-semibold">The price: LamThao</div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="lamthao">
+                        <input class="border-2 w-full rounded-md py-1" type="link" name="lamthao">
                     </div>
                     <div class="pt-3">
                         <div class="font-semibold">The price: Watsons</div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="watsons">
+                        <input class="border-2 w-full rounded-md py-1" type="link" name="watsons">
                     </div>
                     <div class="pt-2">
                         <div class="font-semibold">The price: Socialla</div>
-                        <input class="border-2 w-full rounded-md py-1" type="text" name="socialla">
+                        <input class="border-2 w-full rounded-md py-1" type="link" name="socialla">
                     </div>
                 </div>
                 <div class="flex justify-end items-center px-2 py-3 gap-x-2 border-t-2">
-                    <!-- <button type="reset" class="py-2 px-4 border-2 rounded-md"><span>Cancel</span></button> -->
+                    <!-- <button type="reset" class="py-2 px-4 border-2 rounded-md"><span>sCancel</span></button> -->
                     <button type="submit" class="py-2 px-4 bg-blue-500 text-white  border-2 rounded-md hover:bg-blue-400"><span>Create</span></button>
                 </div>
             </form>

@@ -28,9 +28,9 @@
             break;
     }
     ?>
-    <div class="w-[100%] mx-auto border-2">
-        <div class="product m-3 border-2 border-solid rounded-lg ">
-            <div class="m-[18px]">
+    <div class="w-[100%] mx-auto border-2 bg-black">
+        <div class="product m-3 border-2 border-solid rounded-lg bg-white">
+            <div class="m-[18px] p">
                 <div class="flex justify-between items-center">
                     <div class="font-semibold  tracking-wide m-2 uppercase pb-2 text-black" style="font-size: 30px;">Details Of Product Price Changes</div>
                     <div class="gap gap-x-4">
@@ -40,6 +40,9 @@
                         </button>
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             <a href="{{ route('changesLink', ['id' => $product ->id]) }}">Changes Link</a>
+                        </button>
+                        <button onclick="window.location='{{ route('reset') }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Reset
                         </button>
                         @endif
                         <button onclick="window.location='{{ $route }}';" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -74,42 +77,69 @@
                         <table class="table-auto w-[100%] border-2 border-solid">
                             <thead class="border-2 border-solid ">
                                 <tr>
-                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 w-[20%]">AB</th>
-                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 w-[20%]">Hasaki</th>
-                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 w-[20%]">Guardian</th>
-                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 w-[20%]">Thegioiskinfood</th>
-                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 w-[20%]">Lamthao</th>
+                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 ">AB</th>
+                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 ">Hasaki</th>
+                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 ">Guardian</th>
+                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 ">Skinfood</th>
+                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 ">Lamthao</th>
+                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 ">Watsons</th>
+                                    <th class="border-2 border-solid border-black bg-black text-yellow-500 text-[20px] text-center p-2 ">Scocialla</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                ?>
                                 <tr class="font-semibold">
-                                    <td id="p_ab" class="border-2 border-solid border-black text-center p-2 text-[18px] {{ number_format($detail[0]->p_ab) > number_format($detail[1]->p_ab) ? 'text-red-500' : 'text-green-500'}}">
+                                    <td id="p_ab" class="border-2 border-solid border-black text-center p-2 text-[18px] ">
                                         <div class="">
-                                            {{number_format($detail[0]->p_ab), 0, ',', '.'}}
+                                            <a href="{{$product -> ab_beautyworld}}">
+                                                {{number_format($detail[0]->p_ab), 0, ',', '.'}}
+                                            </a>
                                         </div>
                                     </td>
-                                    <td id="p_hsk" class="border-2 border-solid border-black text-center p-2 text-[20px] {{ number_format($detail[0]->p_hsk) > number_format($detail[1]->p_hsk) ? 'text-red-500' : 'text-green-500'}}">
+                                    <td id="p_hsk" class="border-2 border-solid border-black text-center p-2 text-[20px] ">
                                         <div class="">
-                                            {{number_format($detail[0]->p_hsk), 0, ',', '.'}}
+                                            <a href="{{$product -> hasaki}}">
+                                                {{number_format($detail[0]->p_hsk), 0, ',', '.'}}
+                                            </a>
                                         </div>
                                     </td>
-                                    <td id="p_gu" class="border-2 border-solid border-black text-center p-2 text-[20px] {{ number_format($detail[0]->p_gu) > number_format($detail[1]->p_gu) ? 'text-red-500' : 'text-green-500'}}">
+                                    <td id="p_gu" class="border-2 border-solid border-black text-center p-2 text-[20px]">
                                         <div class="">
-                                            {{number_format($detail[0]->p_gu), 0, ',', '.'}}
+                                            <a href="{{$product -> guardian}}">
+                                                {{number_format($detail[0]->p_gu), 0, ',', '.'}}
+                                            </a>
                                         </div>
                                     </td>
-                                    <td id="p_tgs" class="border-2 border-solid border-black text-center p-2 text-[20px] {{ number_format($detail[0]->p_tgs) > number_format($detail[1]->p_tgs) ? 'text-red-500' : 'text-green-500'}}">
+                                    <td id="p_tgs" class="border-2 border-solid border-black text-center p-2 text-[20px] ">
                                         <div class="">
-                                            {{number_format($detail[0]->p_tgs), 0, ',', '.'}}
+                                            <a href="{{$product -> thegioiskinfood}}">
+                                                {{number_format($detail[0]->p_tgs), 0, ',', '.'}}
+                                            </a>
                                         </div>
                                     </td>
-                                    <td id="p_lt" class="border-2 border-solid border-black text-center p-2 text-[20px] {{ number_format($detail[0]->p_lt) > number_format($detail[1]->p_lt) ? 'text-red-500' : 'text-green-500'}}">
+                                    <td id="p_lt" class="border-2 border-solid border-black text-center p-2 text-[20px]">
                                         <div class="">
-                                            {{number_format($detail[0]->p_lt), 0, ',', '.'}}
+                                            <a href="{{$product -> lamthao}}">
+                                                {{number_format($detail[0]->p_lt), 0, ',', '.'}}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td id="p_tgs" class="border-2 border-solid border-black text-center p-2 text-[20px]">
+                                        <div class="">
+                                            <a href="{{$product -> watsons}}">
+                                                {{number_format($detail[0]->p_ws), 0, ',', '.'}}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td id="p_lt" class="border-2 border-solid border-black text-center p-2 text-[20px] ">
+                                        <div class="">
+                                            <a href="{{$product -> socialla}}">
+                                                {{number_format($detail[0]->p_sc), 0, ',', '.'}}
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
-
                             </tbody>
                         </table>
                     </div>

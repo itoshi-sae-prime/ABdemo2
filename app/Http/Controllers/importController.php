@@ -74,9 +74,8 @@ class ImportController extends Controller
                 } else {
                     session()->flash('message', 'No valid data to insert');
                 }
-
                 // Redirect to the 'product' route
-                return redirect()->route('pages.product');
+                return redirect()->route('admin.pages.product');
             }
         }
     }

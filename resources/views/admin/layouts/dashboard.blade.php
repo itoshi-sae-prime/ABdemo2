@@ -29,23 +29,11 @@
                             <li class="mb-1">
                                 <a href="{{ route('admin.pages.urls')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">URLS</span></a>
                             </li>
-                            <!-- <li class="mb-1">
-                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Categories</span></a>
-                            </li> -->
-                            <!-- <li class="mb-1">
-                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i></i><span class="pl-2">Brands</span></a>
-                            </li> -->
-                            <!-- <li class="mb-1">
-                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Price Change</span></a>
-                            </li> -->
                             <li class="mb-1">
                                 <a href="{{route('admin.approved.approve')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Approval List</span></a>
                             </li>
-                            <!-- <li class="mb-1">
-                                <a href="#" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Discount List</span></a>
-                            </li> -->
                             <li class="mb-1">
-                                <a href="{{route('pages.user_list')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">User List</span></a>
+                                <a href="{{route('pages.user_list')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-users"></i><span class="pl-2">User List</span></a>
                             </li>
                             <li class="mb-1">
                                 <a href="{{ route('pages.setting')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Setting</span></a>
@@ -60,8 +48,8 @@
                         @endif
                         <form action="{{ route('logout')}}" method="POST">
                             @csrf
-                            <button type="submit" class="text-slate-500 w-[100%] block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800 my-2">
-                                <i class="fa-solid fa-lock"></i><span class="pl-2">Log out</span>
+                            <button type="submit" class="text-yellow-500 w-[100%] block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800 my-2">
+                                <i class="fa-solid fa-lock"></i><span class="pl-2">Logout</span>
                             </button>
                         </form>
                     </li>

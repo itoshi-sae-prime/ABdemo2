@@ -15,8 +15,6 @@
         <div class="border-2 bg-white rounded-lg">
             <div class="flex justify-between items-center px-3 py-1 border-b-2 bg-white shadow-lg" style="position: sticky; top: 0; z-index:1">
                 <span class="pr-2 text-[18px] uppercase font-bold py-2">Approved</span>
-                <div class="flex justify-center items-center gap-2">
-                </div>
             </div>
             <table class="table-auto w-full">
                 <thead class="py-5 border-b-2 w-100">

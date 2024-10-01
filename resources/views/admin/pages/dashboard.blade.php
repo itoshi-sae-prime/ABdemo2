@@ -24,7 +24,7 @@
                 <!-- Overview Section -->
                 <div class="bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h2 class="text-xl font-semibold mb-4 text-gray-800">Overview</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-3">
                         @foreach([
                         ['count' => 21, 'color' => 'text-gray-700', 'text' => 'No Change'],
                         ['count' => 3, 'color' => 'text-red-600', 'text' => 'Out of Stock Everywhere'],

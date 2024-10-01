@@ -30,10 +30,12 @@ class PromotionController extends Controller
     public function sendRequest(Request $request)
     {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $userId = session('user');
-        $infor = DB::table('user_login')->where('id', $userId->id)->first();
-
+        $check = new Check();
+        $infor = $check->checkUser()[0];
         $name = $infor->name;
+
+
+
         $curren_time = now();
         $barcode = $request['barcode'];
         $price = $request['b_value'];
@@ -70,15 +72,15 @@ class PromotionController extends Controller
     {
         $approvedRequests = DB::table('approved')->where('is_approved', 0)->get();
         $user = session('user');
-        return view('admin.approved.approve', ['approvedRequests' => $approvedRequests]);
-        // if ($user->name === 'Nguyễn Thành Danh') {
-        //     return view('admin.approved.approve', ['approvedRequests' => $approvedRequests]);
-        // } elseif ($user->name === 'Lê Minh Quốc') {
-        //     return view('manager.approved.approve', ['approvedRequests' => $approvedRequests]);
-        // } else {
-        //     // Xử lý trường hợp mặc định nếu cần thiết
-        //     return view('login');
-        // }
+        if ($user->name === 'Nguyễn Thành Danh') {
+            return view('admin.approved.approve', ['approvedRequests' => $approvedRequests]);
+        } elseif ($user->name === 'Lê Minh Quốc') {
+            return view('manager.approved.approve', ['approvedRequests' => $approvedRequests]);
+        } else {
+            // Xử lý trường hợp mặc định nếu cần thiết
+            return view('login');
+        }
+        // return view('admin.approved.approve', ['approvedRequests' => $approvedRequests]);
     }
     public function getApporveRefused(Request $request)
     {

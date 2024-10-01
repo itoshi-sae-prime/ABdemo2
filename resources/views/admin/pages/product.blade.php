@@ -3,7 +3,7 @@
 @section('title', 'Product History')
 
 @section('style-libraries')
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
 <script src="https://kit.fontawesome.com/6ef99526a1.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 @endsection
@@ -17,10 +17,10 @@
             <div class="flex justify-between items-center px-3 py-1 border-b-2 bg-white shadow-lg" style="position: sticky; top: 0; z-index:1">
                 <span class="pr-2 text-[18px] uppercase font-bold">Product</span>
                 <div class="flex justify-center items-center gap-2">
-                    <!-- <button class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
+                    <button id="openFillter" class="py-2 px-4 rounded-md border bg-light font-medium uppercase flex justify-center items-center">
                         <i class="fa-solid fa-filter pr-1"></i>
                         <div class="px-1">FILTERS</div>
-                    </button> -->
+                    </button>
                     <!-- Search -->
                     <div class="border-2 rounded-md">
                         <form class="flex" action="{{ route('admin.pages.product') }}" method="GET" id="searchForm">
@@ -53,14 +53,16 @@
                             <i class="fa-solid fa-plus pr-1"></i>Create
                         </button>
                     </a>
-                    <div>
-                        <select name="values" class="py-2 px-2 rounded-md border bg-light text-xs font-medium">
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="150">150</option>
-                            <option value="200">200</option>
-                        </select>
-                    </div>
+                    <form method="GET" action="{{ route('admin.pages.product') }}">
+                        <div>
+                            <select name="perPage" class="py-2 px-2 rounded-md border bg-light text-xs font-medium" onchange="this.form.submit()">
+                                <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                <option value="150" {{ request('perPage') == 150 ? 'selected' : '' }}>150</option>
+                                <option value="200" {{ request('perPage') == 200 ? 'selected' : '' }}>200</option>
+                            </select>
+                        </div>
+                    </form>
                     <button id="refresh" class="py-2 px-3 rounded-md border bg-light text-xs font-medium">
                         <i class="fa-solid fa-arrows-rotate"></i>
                     </button>
@@ -84,9 +86,46 @@
                     </form>
                 </div>
             </div>
+            <div id="FilterToggle" class="p-4 bg-slate-200" style="display:none">
+                <div class="flex justify-center items-center">
+                    <form id="fillter_form" method="post" action="" class="p-3 flex flex-col justify-center items-center bg-gray-100 rounded-lg shadow-lg" style="width:100%">
+                        @csrf
+                        <div class="flex flex-col space-y-4 w-full">
+                            <!-- Product Code Filter -->
+                            <div class="flex flex-col">
+                                <label for="product_code" class="text-gray-700">Mã sản phẩm</label>
+                                <input type="text" id="product_code" name="product_code" class="mt-1 p-2 border border-gray-300 rounded-lg" placeholder="Enter Product Code">
+                            </div>
+
+                            <!-- Product Name Filter -->
+                            <div class="flex flex-col">
+                                <label for="product_name" class="text-gray-700">Tên sản phẩm</label>
+                                <input type="text" id="product_name" name="product_name" class="mt-1 p-2 border border-gray-300 rounded-lg" placeholder="Enter Product Name">
+                            </div>
+
+                            <!-- Brand Filter -->
+                            <div class="flex flex-col">
+                                <label for="brand" class="text-gray-700">Brand</label>
+                                <input type="text" id="brand" name="brand" class="mt-1 p-2 border border-gray-300 rounded-lg" placeholder="Enter Brand">
+                            </div>
+                        </div>
+
+                        <button type="submit" name="save_excel_data" class="mt-4 px-3 py-2 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" style="background-color:green">
+                            Filter
+                        </button>
+                    </form>
+                </div>
+            </div>
+
             @if (session('message'))
             <div class="alert alert-info text-center font-extrabold">
                 {{ session('message') }}
+            </div>
+            @endif
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             @endif
             <table class="table-auto w-full">
@@ -112,7 +151,7 @@
                     @foreach ($arr as $row)
                     <form action="{{ route('product.delete.selected') }}" method="POST">
                         <tr id="toggleDisplay-{{ $row->id }}" class="font-semibold hover:bg-blue-100 border-b-2 m-1">
-                            <td class="w-1/12 text-center">
+                            <td class="w-1/12 text-center h-24">
                                 <input type="checkbox" name="items" value="{{ $row->id }}">
                             </td>
                             <td class="mx-1">{{ $row->product_barcode }}</td>
@@ -133,9 +172,11 @@
                             @endif
                             @if(isset($average_values[$row->id]))
                             <td alt="" class="text-center">
-                                {{ number_format($average_values[$row->id], 0, ',', '.') }}
+                                {{ $average_values ? number_format($average_values[$row->id], 0, ',', '.') : '0' }}
                             </td>
                             @endif
+                            @isset($average_values[$row->id])
+
                             <td class="border-solid h-24">
                                 <div class="flex justify-center">
                                     <button>
@@ -148,6 +189,7 @@
                                     <div class="indicator" id="indicator-{{ $row->id }}" data-id="{{ $row->id }}"></div>
                                 </div>
                             </td>
+                            @endisset
                         </tr>
                     </form>
                     <?php
@@ -160,34 +202,6 @@
         </div>
     </div>
 </body>
-<script>
-    document.querySelectorAll('.display-toggle').forEach(element => {
-        element.addEventListener('click', function() {
-            const id = element.querySelector('.indicator').getAttribute('data-id');
-            const targetElement = document.getElementById('toggleDisplay-' + id);
-            console.log(id);
-            element.classList.toggle('active');
-            if (targetElement) {
-                targetElement.classList.toggle('nice');
-            }
-        });
-    });
-
-    document.getElementById('openModalBtn').addEventListener('click', function() {
-        var importToggle = document.getElementById('ImportToggle');
-        if (importToggle.style.display === "none" || importToggle.style.display === "") {
-            importToggle.style.display = "block";
-        } else {
-            importToggle.style.display = "none";
-        }
-    });
-
-    function displayFileName() {
-        var input = document.getElementById('fileInput');
-        var fileName = document.getElementById('fileName');
-        fileName.textContent = input.files[0] ? input.files[0].name : "No file chosen";
-    }
-</script>
 @endsection
 
 @section('scripts')
@@ -203,7 +217,7 @@
         // Tạo mảng để chứa các ID đã chọn
         const selectedIds = Array.from(document.querySelectorAll('input[name="items"]:checked'))
             .map(checkbox => checkbox.value);
-
+        console.log(selectedIds);
         if (selectedIds.length === 0) {
             alert('Vui lòng chọn ít nhất một mục để xóa.');
             return;
@@ -243,5 +257,40 @@
             form.submit();
         }
     });
+    document.querySelectorAll('.display-toggle').forEach(element => {
+        element.addEventListener('click', function() {
+            const id = element.querySelector('.indicator').getAttribute('data-id');
+            const targetElement = document.getElementById('toggleDisplay-' + id);
+            console.log(id);
+            element.classList.toggle('active');
+            if (targetElement) {
+                targetElement.classList.toggle('nice');
+            }
+        });
+    });
+
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        var importToggle = document.getElementById('ImportToggle');
+        if (importToggle.style.display === "none" || importToggle.style.display === "") {
+            importToggle.style.display = "block";
+        } else {
+            importToggle.style.display = "none";
+        }
+    });
+
+    document.getElementById('openFillter').addEventListener('click', function() {
+        var FillterToggle = document.getElementById('FilterToggle');
+        if (FillterToggle.style.display === "none" || FillterToggle.style.display === "") {
+            FillterToggle.style.display = "block";
+        } else {
+            FillterToggle.style.display = "none";
+        }
+    });
+
+    function displayFileName() {
+        var input = document.getElementById('fileInput');
+        var fileName = document.getElementById('fileName');
+        fileName.textContent = input.files[0] ? input.files[0].name : "No file chosen";
+    }
 </script>
 @endsection

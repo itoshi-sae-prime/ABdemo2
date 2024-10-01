@@ -50,39 +50,39 @@
             @csrf
             <div class="">
                 <div class="font-semibold">Barcode</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" readonly type="text" name="product_barcode" value="{{ $products->product_barcode }}">
+                <input class="border-2 w-full rounded-md py-1 px-2 bg-gray-200" readonly type="text" name="product_barcode" value="{{ $products->product_barcode }}">
             </div>
             <div class="pt-3">
                 <div class="font-semibold">Product name</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" readonly type="text" name="product_name" value="{{ $products->product_name }}">
+                <input class="border-2 w-full rounded-md py-1 px-2 bg-gray-200" readonly type="text" name="product_name" value="{{ $products->product_name }}">
             </div>
             <div class="pt-3">
                 <div class="font-semibold">Brand</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" readonly type="text" name="brand" value="{{ $products->brand }}">
+                <input class="border-2 w-full rounded-md py-1 px-2 bg-gray-200" readonly type="text" name="brand" value="{{ $products->brand }}">
             </div>
             <div class="pt-3">
                 <div class="font-semibold">The Link: AB</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" type="text" name="ab_beautyworld" value="{{ $products->ab_beautyworld }}">
+                <input class="border-2 w-full rounded-md py-1 px-2" type="link" name="ab_beautyworld" value="{{ $products->ab_beautyworld }}">
             </div>
             <div class="pt-3">
                 <div class="font-semibold">The Link: Hasaki</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" type="text" name="hasaki" value="{{ $products->hasaki }}">
+                <input class="border-2 w-full rounded-md py-1 px-2" type="link" name="hasaki" value="{{ $products->hasaki }}">
             </div>
             <div class="pt-3">
                 <div class="font-semibold">The Link: Guardian</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" type="text" name="guardian" value="{{ $products->guardian }}">
+                <input class="border-2 w-full rounded-md py-1 px-2" type="link" name="guardian" value="{{ $products->guardian }}">
             </div>
             <div class="pt-3">
                 <div class="font-semibold">The Link: Thegioiskinfood</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" type="text" name="thegioiskinfood" value="{{ $products->thegioiskinfood }}">
+                <input class="border-2 w-full rounded-md py-1 px-2" type="link" name="thegioiskinfood" value="{{ $products->thegioiskinfood }}">
             </div>
             <div class="pt-2">
                 <div class="font-semibold">The Link: LamThao</div>
-                <input class="border-2 w-full rounded-md py-1 px-2" type="text" name="lamthao" value="{{ $products->lamthao }}">
+                <input class="border-2 w-full rounded-md py-1 px-2" type="link" name="lamthao" value="{{ $products->lamthao }}">
             </div>
             <div class="" style="display: flex; justify-content:right; gap: 10px;">
                 <button type="submit" class="styled-button" style="margin-top:15px">Changes</button>
-                <button onclick="window.history.back()" class="styled-button">
+                <button onclick="window.location='{{route('history')}}'" class="styled-button">
                     Back
                 </button>
             </div>

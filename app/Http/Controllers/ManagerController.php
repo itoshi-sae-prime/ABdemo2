@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ManagernController extends Controller
+class ManagerController extends Controller
 {
-    public function dashboardpage_manager()
+    public function dashboardpage_mng()
     {
         return view('manager.pages.dashboard');
     }
