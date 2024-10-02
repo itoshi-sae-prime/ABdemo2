@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Auth;
 */
 // Page
 Route::get('/index', [PageController::class, 'IndexPage']);
-Route::get('/home', [PageController::class, 'HomePage'])->name('pages.home');
+Route::get('/', [PageController::class, 'HomePage'])->name('pages.home');
 Route::get('/about', [PageController::class, 'AboutPage'])->name('pages.about');
 Route::get('/contact', [PageController::class, 'ContactPage'])->name('pages.contact');
 Route::get('/men', [PageController::class, 'MenPage'])->name('pages.men');
@@ -43,7 +43,7 @@ Route::get('/post', [PageController::class, 'Post']);
 Route::post('/send-mail', [MailController::class, 'sendMail'])->name('send.mail');
 Route::get('/checkout', [PageController::class, 'CheckoutPage'])->name('checkout');
 //////////////////////////////
-Route::get('/', [loginController::class, 'loginview'])->name('loginview');
+Route::get('/login', [loginController::class, 'loginview'])->name('loginview');
 Route::post('/login', [loginController::class, 'login'])->name('login');
 Route::post('/logout', [loginController::class, 'logout'])->name('logout');
 Route::get('export', [ExportController::class, 'export'])->name('export');

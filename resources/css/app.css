@@ -185,8 +185,7 @@ input[type="file"] #file-upload-button {
 }
 
 .slide {
-    width: 1200px;
-    max-width: 100vw;
+    width: 100%;
     height: 700px;
     overflow: hidden;
 }
@@ -245,4 +244,16 @@ input[type="file"] #file-upload-button {
 
 .next-button {
     margin-right: 20px;
+}
+
+.item-pic {
+    /* Đặt kích thước của phần tử */
+    height: 100vw;
+    /* Đặt chiều cao cho phần tử */
+    background-position: center bottom;
+    /* Lấy phần dưới của ảnh */
+    background-repeat: no-repeat;
+    /* Không lặp lại ảnh */
+    background-size: cover;
+    /* Đảm bảo ảnh bao phủ hết phần tử */
 }

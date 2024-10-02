@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 @endsection
 @section('content')
-<div class="gap-x-4 text-white w-full flex justify-center pt-5">
-    <div class="relative z-50">
-        <ul class="grid gap-2 bg-white p-2 rounded-lg shadow-lg" style="width: 230px;left:25px">
+<div class="gap-x-4 text-white w-full flex justify-center pt-4 pb-8">
+    <!-- <div class="relative z-50 lg:block hidden ">
+        <ul class="grid gap-2 bg-white p-2 rounded-lg shadow-lg" style="max-width: 230px;left:25px">
             <li class="grid justify-center pb-[20px] border-b-2">
                 <div class="breadcrumbs flex justify-center py-3">
                     <div class="text-black font-semibold px-3"><a href="">Home</a></div>
@@ -25,28 +25,28 @@
                 </form>
             </li>
             <li class="pt-[20px]">
-                <div class="category-button font-bold text-[17px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="all">All</div>
+                <div class="category-button font-bold text-[12px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="all">All</div>
             </li>
             <li>
-                <div class="category-button font-bold text-[17px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="T-Shirt">T-Shirts</div>
+                <div class="category-button font-bold text-[12px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="T-Shirt">T-Shirts</div>
             </li>
             <li>
-                <div class="category-button font-bold text-[17px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="Shirt">Shirts</div>
+                <div class="category-button font-bold text-[12px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="Shirt">Shirts</div>
             </li>
             <li>
-                <div class="category-button font-bold text-[17px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="Pants">Pants</div>
+                <div class="category-button font-bold text-[12px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="Pants">Pants</div>
             </li>
             <li class="pb-[20px]">
-                <div class="category-button font-bold text-[17px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="Short">Short</div>
+                <div class="category-button font-bold text-[12px] border-2 text-black hover:text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out" data-value="Short">Short</div>
             </li>
             <form id="categoryForm" method="GET" action="{{ route('all.search') }}" style="display: none;">
                 <input type="hidden" id="categoryInput" name="category" value="">
             </form>
         </ul>
-    </div>
-    <div class="grid grid-cols-4 gap-4 justify-between items-start w-full" style="width:auto">
+    </div> -->
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between items-start w-full" style="width:auto">
         @foreach($data as $data)
-        <div class="card p-5 bg-white rounded-lg shadow-lg transform transition-all duration-300 hover:shadow-2xl hover:scale-105" style="width:280px;height: 410px;">
+        <div class="card p-5 bg-white rounded-lg shadow-lg transform transition-all duration-300 hover:shadow-2xl hover:scale-105" style="width:280px;height: 100%;">
             @if($data['img']==null || $data['img']=="" )
             <img src="https://i.imgur.com/WnpOhI9.jpeg" name="img" alt="img" class="w-full h-48 object-cover rounded-lg">
             @else

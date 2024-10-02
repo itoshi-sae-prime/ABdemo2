@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 @endsection
 @section('content')
-<div class="text-black">
+<div class="text-black bg-white">
     <div class="flex justify-center items-center bg-white  mx-[100px]">
         <!-- Product Image -->
         <div class="md:w-1/2 flex justify-center bg-white">
@@ -80,8 +80,8 @@
             <!-- <div class="absolute h-[100vh] bg-white w-[250px] right-0 top-0"></div> -->
         </div>
     </div>
-    <div class="bg-white p-4 w-full my-2"></div>
-    <div class="py-20 flex justify-center gap-x-4 p-10">
+    <div class="bg-black p-4 w-full my-2"></div>
+    <div class="py-20 flex justify-center gap-x-4 p-10 bg-black">
         @foreach($data[0]['gallary'] as $gallary)
         <img src="{{ $gallary }}" alt="{{ $data[0]['name'] }}" class="w-full max-w-md rounded-lg object-cover">
         @endforeach
