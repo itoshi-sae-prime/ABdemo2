@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<div class="bg-slate-100 flex justify-center py-8">
+<div class="bg-white flex justify-center py-8">
     <div class="bg-slate-100 rounded-lg shadow-lg w-full max-w-6xl flex flex-wrap justify-center items-center">
         <!-- Left Side: Contact Form -->
         <div class="w-full md:w-1/2 p-8 ">

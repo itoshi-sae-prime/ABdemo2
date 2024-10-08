@@ -11,7 +11,7 @@
 <div class="text-black bg-white">
     <div class="flex justify-center items-center bg-white  mx-[100px]">
         <!-- Product Image -->
-        <div class="md:w-1/2 flex justify-center bg-white">
+        <div class="md:w-1/2 flex justify-center bg-white sm:w-auto">
             <img src="{{ $data[0]['img'] }}" alt="{{ $data[0]['name'] }}" class="w-full max-w-md rounded-lg">
         </div>
         <!-- Product Information -->
@@ -39,9 +39,13 @@
                 </label>
                 @endforeach
             </div>
-            <div class="flex items-center mb-5">
+            <div class="flex items-center mb-5 gap-x-3">
                 <p class="text-xl font-semibold"><strong>Quantity:</strong> </p>
-                <input type="number" name="quantity" value="{{ $data[0]['quantity'] }}" class="ml-2 w-12 border rounded text-center focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <div class="flex items-center gap-x-3 border-2">
+                    <button class="px-2 text-xl border-2 bg-slate-300" onclick="decreaseQuantity({{ $data[0]['id'] }})">-</button>
+                    <span id="quantity-{{ $data[0]['id'] }}" class="text-sm font-medium text-gray-700">{{ $data[0]['quantity'] }}</span>
+                    <button class="px-2 text-xl border-2 bg-slate-300" onclick="increaseQuantity({{ $data[0]['id'] }})">+</button>
+                </div>
             </div>
             <div class="flex mb-5">
                 <p class="font-bold">Need help choosing a size?</p>
@@ -81,7 +85,7 @@
         </div>
     </div>
     <div class="bg-black p-4 w-full my-2"></div>
-    <div class="py-20 flex justify-center gap-x-4 p-10 bg-black">
+    <div class="py-20 flex flex-wrap justify-center gap-4 p-10 bg-black sm:flex-col">
         @foreach($data[0]['gallary'] as $gallary)
         <img src="{{ $gallary }}" alt="{{ $data[0]['name'] }}" class="w-full max-w-md rounded-lg object-cover">
         @endforeach
@@ -136,5 +140,62 @@
             });
         });
     });
+
+    function decreaseQuantity(itemId) {
+        var quantityElement = document.getElementById('quantity-' + itemId);
+        var currentQuantity = parseInt(quantityElement.innerText);
+
+        if (currentQuantity > 1) {
+            currentQuantity--;
+            quantityElement.innerText = currentQuantity;
+
+        }
+        console.log(itemId, currentQuantity);
+        updateCart(itemId, currentQuantity);
+    }
+
+    function increaseQuantity(itemId) {
+        var quantityElement = document.getElementById('quantity-' + itemId);
+        var currentQuantity = parseInt(quantityElement.innerText);
+
+        currentQuantity++;
+        quantityElement.innerText = currentQuantity;
+        console.log(itemId, currentQuantity);
+        console.log(updateCart(itemId, currentQuantity));
+    }
+
+    function updateCart(itemId, quantity) {
+        // Kiểm tra nếu số lượng là hợp lệ
+        if (quantity < 0) {
+            alert("Quantity cannot be less than 0.");
+            return;
+        }
+        // Gửi yêu cầu AJAX để cập nhật giỏ hàng
+        fetch(`/update-cart`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF protection in Laravel
+                },
+                body: JSON.stringify({
+                    id: itemId, // ID of the item being updated
+                    quantity: quantity // New quantity
+                })
+            })
+            .then(response => response.json()) // Parse the JSON response
+            .then(data => {
+                if (data.success) {
+                    console.log(data); // Log the returned data for debugging
+                    // Update the UI with the new quantity
+                    document.getElementById(`quantity-${itemId}`).innerText = quantity;
+                    console.log(quantity);
+                } else {
+                    alert('Failed to update the cart.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 </script>
 @endsection

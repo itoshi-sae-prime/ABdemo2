@@ -257,3 +257,14 @@ input[type="file"] #file-upload-button {
     background-size: cover;
     /* Đảm bảo ảnh bao phủ hết phần tử */
 }
+
+.styled-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: flex-end;
+}

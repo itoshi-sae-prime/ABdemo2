@@ -20,7 +20,8 @@
                     <p class="text-black">/</p>
                     <button class="text-black font-semibold px-3"><a href="#">Shipping Information</a></button>
                 </div>
-                <form action="#" method="POST">
+                <form action="{{ route('send.mail') }}" method="POST">
+                    @csrf
                     <!-- Personal Information -->
                     <div class="mb-4">
                         <div class="mb-4">

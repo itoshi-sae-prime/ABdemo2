@@ -14,7 +14,7 @@
         <h2 class="text-2xl font-bold mb-6">Your Shopping Cart</h2>
 
         <!-- Thông báo -->
-        @if(session('success'))
+        <!-- @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -30,7 +30,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        @endif
+        @endif -->
 
         <!-- Bố cục giỏ hàng -->
         <div class="flex flex-col lg:flex-row">
@@ -40,7 +40,6 @@
                 $cart = session()->get('cart', []);
                 $total = 0;
                 @endphp
-
                 @if($cart && count($cart) > 0)
                 @foreach($cart as $item)
                 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
@@ -110,8 +109,10 @@
         if (currentQuantity > 1) {
             currentQuantity--;
             quantityElement.innerText = currentQuantity;
-            updateCart(itemId, currentQuantity);
+
         }
+        console.log(itemId, currentQuantity);
+        updateCart(itemId, currentQuantity);
     }
 
     function increaseQuantity(itemId) {
@@ -120,11 +121,42 @@
 
         currentQuantity++;
         quantityElement.innerText = currentQuantity;
-        updateCart(itemId, currentQuantity);
+        console.log(itemId, currentQuantity);
+        console.log(updateCart(itemId, currentQuantity));
     }
 
     function updateCart(itemId, quantity) {
-        // Code để cập nhật giỏ hàng (cần xử lý thêm ở backend)
+        // Kiểm tra nếu số lượng là hợp lệ
+        if (quantity < 0) {
+            alert("Quantity cannot be less than 0.");
+            return;
+        }
+        // Gửi yêu cầu AJAX để cập nhật giỏ hàng
+        fetch(`/update-cart`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF protection in Laravel
+                },
+                body: JSON.stringify({
+                    id: itemId, // ID of the item being updated
+                    quantity: quantity // New quantity
+                })
+            })
+            .then(response => response.json()) // Parse the JSON response
+            .then(data => {
+                if (data.success) {
+                    console.log(data); // Log the returned data for debugging
+                    // Update the UI with the new quantity
+                    document.getElementById(`quantity-${itemId}`).innerText = quantity;
+                    console.log(quantity);
+                } else {
+                    alert('Failed to update the cart.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 </script>
 @endsection

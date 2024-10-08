@@ -8,10 +8,13 @@ use PHPMailer\PHPMailer\Exception;
 
 class MailController extends Controller
 {
-    public function sendMail()
+    public function sendMail(Request $request)
     {
+        $email = $request->input('email');
+        $name = $request->input('full_name');
+        $phone = $request->input('phone');
+        $address = $request->input('address');
         $mail = new PHPMailer(true);
-
         try {
             // Cấu hình máy chủ SMTP
             $mail->isSMTP();
@@ -29,19 +32,25 @@ class MailController extends Controller
                     'allow_self_signed' => true
                 )
             );
-
-            // Cấu hình người gửi và người nhận
-            $mail->setFrom('tukien951@gmail.com', 'LungTungStudio');
-            $mail->addAddress('tukien159@gmail.com');  // Địa chỉ email người nhận
-
+            session()->save();
             // Lấy giỏ hàng từ session
             $cart = session()->get('cart', []);
             $total = 0;
+            // Cấu hình người gửi và người nhận
+            $mail->setFrom('tukien951@gmail.com', 'LungTungStudio');
+            $mail->addAddress($email); // Địa chỉ email người nhận
+
+
+
 
             // Tạo nội dung email từ giỏ hàng
-            $emailContent = '<h1>Your Shopping Cart</h1>';
-            $emailContent .= '<p>Dear Customer,</p>'; // Lời chào
-            $emailContent .= '<p>Thank you for shopping with us! Here are the items in your cart:</p>'; // Lời cảm ơn
+            $emailContent = '<h1>Your Order Confirmation</h1>';
+            $emailContent .= '<p>Dear ' . $name . ',</p>';
+            $emailContent .= '<p>Thank you for your recent purchase with [Your Company Name]. We appreciate your business.</p>';
+            $emailContent .= '<p>**Shipping Address:**</p>';
+            $emailContent .= '<p>' . $address . '</p>';
+            $emailContent .= '<p>**Phone Number:**</p>';
+            $emailContent .= '<p>' . $phone . '</p>';
 
             foreach ($cart as $item) {
                 $emailContent .= "<p><img src=\"{$item['img']}\" alt=\"Product Image\"></p>";
@@ -64,7 +73,8 @@ class MailController extends Controller
 
             // Gửi email
             $mail->send();
-            return back()->with('success', 'Email has been sent successfully');
+            session()->forget('cart');
+            return redirect()->route('all.search')->with('success', 'Email has been sent successfully');
         } catch (Exception $e) {
             return back()->with('error', "Email could not be sent. Error: {$mail->ErrorInfo}");
         }

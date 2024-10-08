@@ -36,7 +36,7 @@
                                 <a href="{{route('pages.user_list')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-users"></i><span class="pl-2">User List</span></a>
                             </li>
                             <li class="mb-1">
-                                <a href="{{ route('pages.setting')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Setting</span></a>
+                                <a href="{{ route('admin.pages.pager')}}" class="text-slate-500 block px-3 py-2 font-semibold rounded-lg hover:text-white hover:bg-slate-800"><i class="fa-solid fa-lock"></i><span class="pl-2">Pages</span></a>
                             </li>
                         </ul>
                     </li>

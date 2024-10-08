@@ -14,6 +14,7 @@ use App\Http\Controllers\PromotionController as PromotionController;
 use App\Http\Controllers\PageController as PageController;
 use App\Http\Controllers\CartController as CartController;
 use App\Http\Controllers\MailController as MailController;
+use App\Http\Controllers\NewController as NewController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,6 +41,7 @@ Route::get('/cart', [PageController::class, 'CartPage'])->name('pages.cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('Addtocart');
 Route::get('/remove-from-cart/{id}/{color}/{size}', [CartController::class, 'deletetoCart'])->name('Deletetocart');
 Route::get('/post', [PageController::class, 'Post']);
+Route::post('/update-cart', [CartController::class, 'updateCart']);
 Route::post('/send-mail', [MailController::class, 'sendMail'])->name('send.mail');
 Route::get('/checkout', [PageController::class, 'CheckoutPage'])->name('checkout');
 //////////////////////////////
@@ -57,6 +59,8 @@ Route::get('reset', [IndexPage::class, 'reset'])->name('reset');
 // Route::get('makeChanges', [PromotionController::class, 'promotionForm'])->name('changesform');
 Route::group(['prefix' => 'admin', 'middleware' => ['role:Nguyễn Thành Danh']], function () {
     Route::get('dashboard', [AdminController::class, 'dashboardpage_adm'])->name('admin.pages.dashboard');
+    Route::get('pages', [NewController::class, 'HomeP'])->name('admin.pages.pager');
+    Route::post('changeslink_pages', [NewController::class, 'changesLink_pages'])->name('admin.changesLink_pages');
     Route::get('categories', [IndexPage::class, 'categoriespage'])->name('pages.categories');
     Route::get('brand', [IndexPage::class, 'brandpage'])->name('pages.brand');
     Route::get('setting', [IndexPage::class, 'dashboardPage'])->name('pages.setting');

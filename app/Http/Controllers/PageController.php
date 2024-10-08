@@ -22,7 +22,7 @@ class PageController extends Controller
         $img = DB::table('album')->get();
         $cart = session()->get('cart', []);
         $countCart = count($cart);
-        return view('layout.pages.home', ['data' => $img]);
+        return view('layout.pages.home', ['data' => $img, 'count' => $countCart]);
     }
     public function AboutPage()
     {
@@ -30,7 +30,9 @@ class PageController extends Controller
     }
     public function ContactPage()
     {
-        return view('layout.pages.contact');
+        $cart = session()->get('cart', []);
+        $countCart = count($cart);
+        return view('layout.pages.contact', ['count' => $countCart]);
     }
     public function MenPage()
     {
@@ -38,7 +40,6 @@ class PageController extends Controller
     }
     public function AllPage(Request $request)
     {
-
         $response = Http::get('http://localhost:3000/api/data');
         if ($response->successful()) {
             // Lấy dữ liệu từ API
@@ -62,9 +63,10 @@ class PageController extends Controller
                     return $matchCategory && $matchSearch;
                 });
             }
-
+            $cart = session()->get('cart', []);
+            $countCart = count($cart);
             // Trả dữ liệu đã xử lý cho view
-            return view('layout.pages.all', ['data' => $data]);
+            return view('layout.pages.all', ['data' => $data, 'count' => $countCart]);
         } else {
 
             return view('layout.pages.all')->with('error', 'Failed to fetch data from the API.');
@@ -82,7 +84,9 @@ class PageController extends Controller
             // Get the data from the API response
             $data = $response->json();
             // Pass the data to the views
-            return view('layout.pages.detail_pd', ['data' => $data]);
+            $cart = session()->get('cart', []);
+            $countCart = count($cart);
+            return view('layout.pages.detail_pd', ['data' => $data, 'count' => $countCart]);
         } else {
             // Handle the error (optional)
             return view('layout.pages.all')->with('error', 'Failed to fetch data from the API.');
